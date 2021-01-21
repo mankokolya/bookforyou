@@ -1,4 +1,4 @@
-package com.library.bookforyou;
+package com.library.bookforyou.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +10,6 @@ public class BookForYouController {
 
     @GetMapping("/home")
     public String goHome() {
-        return "index";
+        return "login";
     }
 }

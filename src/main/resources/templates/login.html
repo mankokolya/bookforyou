@@ -1,79 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
     <title>[[${pageTitle}]] Book For You</title>
-
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
-
+    <div th:replace="fragments :: dependencies">Dependency</div>
 </head>
 <body>
-<!--create navigation bar-->
-<nav class="navbar navbar-inverse navbar-brown navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/login" th:text="#{app.title}">Title</span></a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li class="active"> <a href="/login">Home</a></li>
-            <li><a href="#">Users</a> </li>
-            <li><a href="#">Category</a></li>
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="/registration"><span class="glyphicon glyphicon-user"></span> Sign Up </a> </li>
-            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login </a> </li>
-        </ul>
-    </div>
-</nav>
+<div th:replace="fragments :: menu">Menu</div>
 <br/>
 <br/>
 <!--login form-->
-<div class = "container">
+<div class="container">
     <div class="row">
         <!--bootstrap, css grid system-->
-        <div class = "col-md-6 col-md-offset-3">
-            <h1>User Login Page</h1>
-            <form th:action="@{/login}" method = "post">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>[[#{login.login}]]</h1>
+            <form th:action="@{/login}" method="post">
 
                 <!--error message-->
                 <div th:if="${param.error}">
-                    <div class = "alert alert-danger">Invalid username or password.</div>
+                    <div class="alert alert-danger">[[#{login.error}]]</div>
                 </div>
 
                 <!--logout message-->
                 <div th:if="${param.logout}">
-                    <div class="alert alert-info">You have been logged out</div>
+                    <div class="alert alert-info">[[#{login.logout}]]</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="username">Username </label>:
-                    <input type="text" class = "form-control" id = "username"
-                           name = "username" placeholder="Enter Email ID" autofocus="autofocus">
+                    <label for="username">[[#{login.username}]]</label>:
+                    <input type="text" class="form-control" id="username"
+                           name="username" th:placeholder="#{login.emailPlaceholder}" autofocus="autofocus">
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password </label> :
-                    <input type="password" class = "form-control" id = "password"
-                           name = "password" placeholder="Enter Password" autofocus="autofocus">
+                    <label for="password">[[#{login.password}]]</label> :
+                    <input type="password" class="form-control" id="password"
+                           name="password" th:placeholder="#{login.passwordPlaceholder}" autofocus="autofocus">
                 </div>
-                <div class ="form-group">
-                    <div class = "row">
+                <div class="form-group">
+                    <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
                             <input type="submit" name="login-submit" id="login-submit"
-                                   class="form-control btn btn-primary" value="Log In"/>
+                                   class="form-control btn btn-primary" th:value="#{login.loginPlaceholder}"/>
                         </div>
                     </div>
                 </div>
             </form>
             <div class="form-group">
-                <span> New user? <a href="/" th:href="@{/registration}">
-                    Register here</a></span>
+                <span>[[#{login.newUser}]]<a href="/" th:href="@{/registration}">
+                    [[#{registration.register}]]</a></span>
             </div>
-
         </div>
     </div>
 </div>

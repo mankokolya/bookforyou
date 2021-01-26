@@ -50,12 +50,33 @@
         </table>
     </div>
     <div><!--<div>&nbsp;</div>-->
-        Total items: [[${totalItems}]] - Page [[${currentPage}]] of  [[${totalPages}]]
+        Total items: [[${totalItems}]] - Page [[${currentPage}]] of [[${totalPages}]]
         &nbsp; - &nbsp;
+        <!--First page-->
+        <a th:if="${currentPage > 1}" th:href="@{/page/1}">First</a>
+<!--        <span th:unless="${currentPage > 1}">First</span>-->
+        &nbsp;
 
+        <!--Previous page-->
+        <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}}">Previous</a>
+        &nbsp;
+
+        <!--Paging-->
         <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-            <a th:href="@{'/page/' + ${i}}">[[${i}]]</a>&nbsp;&nbsp;
+            <a th:if="${i != currentPage}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+            <span th:unless="${i != currentPage}">[[${i}]]</span>
+            &nbsp;
         </span>
+
+        <!--Next page-->
+        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Next</a>
+<!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+        &nbsp;
+
+        <!--Last page-->
+        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">Last</a>
+<!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+        &nbsp;
     </div>
 </div>
 

@@ -23,9 +23,18 @@
         <table class="table table-bordered table-stripped table-hover">
             <thead class="thread-dark">
             <tr>
-                <th>No.</th>
-                <th>Book Title</th>
-                <th>Book Author</th>
+                <th>
+                    <a th:href="@{'/page/' + ${currentPage}
+                    + '?sortField=id&sortDir=' + ${reverseSortDir}}">ID </a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/' + ${currentPage}
+                    + '?sortField=title&sortDir=' + ${reverseSortDir}}">Book Title</a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/' + ${currentPage}
+                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">Book Author</a>
+                </th>
                 <th>Category</th>
                 <th>Book Description</th>
             </tr>
@@ -33,7 +42,7 @@
             <tbody>
             <tr th:each="book, iterStat : ${books}"
                 th:class="${iterStat.even == true ? 'text-primary' : 'text-success'}">
-                <td th:text="${iterStat.count}">No.</td>
+                <td th:text="${book.id}">ID</td>
                 <td th:text="${book.title}">Title</td>
                 <td>
                     <p th:each="author : ${book.getAuthors()}">
@@ -44,7 +53,7 @@
                         <span th:text=" ${category.name}">Category</span>
                     </p>
                 </td>
-                <td th:text="${book.description}"/>
+                <td th:text="${book.description}">Description</td>
             </tr>
             </tbody>
         </table>
@@ -53,29 +62,34 @@
         Total items: [[${totalItems}]] - Page [[${currentPage}]] of [[${totalPages}]]
         &nbsp; - &nbsp;
         <!--First page-->
-        <a th:if="${currentPage > 1}" th:href="@{/page/1}">First</a>
-<!--        <span th:unless="${currentPage > 1}">First</span>-->
+        <a th:if="${currentPage > 1}" th:href="@{'/page/1' +'?sortField='
+            + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+        <!--        <span th:unless="${currentPage > 1}">First</span>-->
         &nbsp;
 
         <!--Previous page-->
-        <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}}">Previous</a>
+        <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}
+            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
         &nbsp;
 
         <!--Paging-->
         <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-            <a th:if="${i != currentPage}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+            <a th:if="${i != currentPage}" th:href="@{'/page/' + ${i}
+                +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
             <span th:unless="${i != currentPage}">[[${i}]]</span>
             &nbsp;
         </span>
 
         <!--Next page-->
-        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Next</a>
-<!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}
+            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+        <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
         &nbsp;
 
         <!--Last page-->
-        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">Last</a>
-<!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}
+            + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+        <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
         &nbsp;
     </div>
 </div>

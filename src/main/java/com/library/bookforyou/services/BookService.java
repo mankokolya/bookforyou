@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class BookService {
@@ -17,9 +16,11 @@ public class BookService {
     @Autowired
     BookRepository bookRepository;
 
-    public Page<Book> listAll(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber - 1, 2);
+    public Page<Book> listAll(int pageNumber, String sortField, String sortDir) {
+        int pageSize = 2;
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sortDir.equals("asc") ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending()
+        );
         return bookRepository.findAll(pageable);
     }
-
 }

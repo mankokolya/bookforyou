@@ -12,41 +12,51 @@
 <br>
 <br>
 <div class="container">
-    <h3>Books Available</h3>
-    <hr/>
+    <div><h3>Books Available</h3>
+        <hr/>
 
-    <a th:href="@{/books/new}" class="btn btn-primary table-striped">Add Book</a>
-    <a class="btn btn-danger table-striped">Delete</a>
-    <a class="btn btn-info table-striped">Edit</a>
+        <a th:href="@{/books/new}" class="btn btn-primary table-striped">Add Book</a>
+        <a class="btn btn-danger table-striped">Delete</a>
+        <a class="btn btn-info table-striped">Edit</a>
+    </div>
+    <div>
+        <table class="table table-bordered table-stripped table-hover">
+            <thead class="thread-dark">
+            <tr>
+                <th>No.</th>
+                <th>Book Title</th>
+                <th>Book Author</th>
+                <th>Category</th>
+                <th>Book Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book, iterStat : ${books}"
+                th:class="${iterStat.even == true ? 'text-primary' : 'text-success'}">
+                <td th:text="${iterStat.count}">No.</td>
+                <td th:text="${book.title}">Title</td>
+                <td>
+                    <p th:each="author : ${book.getAuthors()}">
+                        <span th:text="${author.getName()}">Author</span>
+                    </p>
+                <td>
+                    <p th:each="category : ${book.categories}">
+                        <span th:text=" ${category.name}">Category</span>
+                    </p>
+                </td>
+                <td th:text="${book.description}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div><!--<div>&nbsp;</div>-->
+        Total items: [[${totalItems}]] - Page [[${currentPage}]] of  [[${totalPages}]]
+        &nbsp; - &nbsp;
 
-    <table class="table table-bordered table-stripped table-hover">
-        <thead class="thread-dark">
-        <tr>
-            <th>No.</th>
-            <th>Book Title</th>
-            <th>Book Author</th>
-            <th>Category</th>
-            <th>Book Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book, iterStat : ${books}"
-            th:class="${iterStat.even == true ? 'text-primary' : 'text-success'}">
-            <td th:text="${iterStat.count}">No.</td>
-            <td th:text="${book.title}">Title</td>
-            <td>
-                <p th:each="author : ${book.getAuthors()}">
-                    <span th:text="${author.getName()}">Author</span>
-                </p>
-            <td>
-                <p th:each="category : ${book.categories}">
-                    <span th:text=" ${category.name}">Category</span>
-                </p>
-            </td>
-            <td th:text="${book.description}"/>
-        </tr>
-        </tbody>
-    </table>
+        <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+            <a th:href="@{'/page/' + ${i}}">[[${i}]]</a>&nbsp;&nbsp;
+        </span>
+    </div>
 </div>
 
 <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->

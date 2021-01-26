@@ -14,12 +14,12 @@ import java.util.List;
 @Service
 public class BookService {
 
-//    @Autowired
-//    BookRepository bookRepository;
-//
-//    public List<Book> listAll() {
-//        Pageable pageable = PageRequest.of(0, 10);
-//        return bookRepository.findAll(pageable);
-//    }
+    @Autowired
+    BookRepository bookRepository;
+
+    public Page<Book> listAll(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, 2);
+        return bookRepository.findAll(pageable);
+    }
 
 }

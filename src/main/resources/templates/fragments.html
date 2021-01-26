@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">>
 <head>Fragments</head>
 
 <body>
@@ -26,7 +27,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
 </div>
 
-<div th:fragment="menu" >
+<div th:fragment="menu">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -41,7 +42,7 @@
                 <a class="navbar-brand" href="/home">[[#{app.title}]]</a>
             </div>
 
-<!--            th:text="#{app.title}-->
+            <!--            th:text="#{app.title}-->
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -67,9 +68,17 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/registration"><span class="glyphicon glyphicon-user"></span>[[#{menu.signUp}]]</a></li>
-                    <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>[[#{menu.login}]]</a>
-                    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span>[[#{menu.logout}]]</a>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/home}">
+                        <span class="glyphicon glyphicon-user" sec:authentication="principal.username"> User</span> </a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a href="@{/registration}"><span class="glyphicon glyphicon-user"></span>[[#{menu.signUp}]]</a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>[[#{menu.login}]]</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span>[[#{menu.logout}]]</a>
                     </li>
                 </ul>
             </div>

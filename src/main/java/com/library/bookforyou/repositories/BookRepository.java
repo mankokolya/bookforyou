@@ -1,6 +1,8 @@
 package com.library.bookforyou.repositories;
 
 import com.library.bookforyou.models.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +18,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "         join book_category bc on b.id = bc.book_id\n" +
             "         join category c on c.id = bc.category_id")
     List<Book> findAllBooks();
+
 }

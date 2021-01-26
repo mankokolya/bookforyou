@@ -17,6 +17,12 @@ public class MainController {
         return "login";
     }
 
+    @GetMapping("/")
+    public String loginSuccess(Model model){
+        return goHome(model);
+    }
+
+
     @GetMapping("/home")
     public String goHome(Model model) {
         model.addAttribute("books", bookRepository.findAll());

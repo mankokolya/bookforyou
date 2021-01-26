@@ -52,27 +52,29 @@
                     <li><a href="#">[[#{menu.category}]]</a></li>
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/home?lang=en">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                                 width="40" height="20">
-                        </a>
-                    </li>
+                <ul class="nav navbar-nav navbar-right" th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/home?lang=uk">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg"
-                                 width="40" height="20">
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{${currentUrl}(lang=en)}">
+                                <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                                     width="40" height="20">
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{${currentUrl}(lang=uk)}">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg"
+                                     width="40" height="20">
+                            </a>
+                        </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li sec:authorize="isAuthenticated()"><a th:href="@{/home}">
                         <span class="glyphicon glyphicon-user" sec:authentication="principal.username"> User</span> </a>
                     </li>
                     <li sec:authorize="isAnonymous()">
-                        <a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span>[[#{menu.signUp}]]</a>
+                        <a th:href="@{/registration}"><span
+                                class="glyphicon glyphicon-user"></span>[[#{menu.signUp}]]</a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>[[#{menu.login}]]</a>

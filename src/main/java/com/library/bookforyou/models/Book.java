@@ -42,8 +42,15 @@ public class Book {
     @Type(type = "text")
     private String description;
 
+    public Book(String title, Set<Author> authors, String publishedDate, Set<BookCategory> categories, String description) {
+        this.title = title;
+        this.authors = authors;
+        this.publishedDate = publishedDate;
+        this.categories = categories;
+        this.description = description;
+    }
 
-//    @OneToOne(mappedBy = "book",    cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+    //    @OneToOne(mappedBy = "book",    cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 //            CascadeType.REFRESH}, fetch = FetchType.LAZY)
 //    private Reserved reserved;
 

@@ -4,7 +4,6 @@
 <head>
     <title>[[${pageTitle}]] Book For You</title>
     <div th:replace="fragments :: dependencies">Dependencies</div>
-    <link rel="stylesheet" href="/resources/static/search.ccs"/>
 </head>
 <body>
 <div th:replace="fragments :: menu">Menu</div>
@@ -14,10 +13,7 @@
 <div class="container">
     <div><h3>[[#{table.title}]]</h3>
         <hr/>
-
         <a th:href="@{/books/new}" class="btn btn-primary table-striped">[[#{table.new}]]</a>
-        <a class="btn btn-danger table-striped">[[#{table.delete}]]</a>
-        <a class="btn btn-info table-striped">[[#{table.edit}]]</a>
     </div>
     <div>
         <table class="table table-bordered table-stripped table-hover">
@@ -37,6 +33,7 @@
                 </th>
                 <th>[[#{table.category}]]</th>
                 <th>[[#{table.description}]]</th>
+                <th>[[#{table.action}]]</th>
             </tr>
             </thead>
             <tbody>
@@ -54,12 +51,18 @@
                     </p>
                 </td>
                 <td th:text="${book.description}">Description</td>
+                <td>
+                    <a class="btn btn-danger table-striped">[[#{table.delete}]]</a>
+                    <a class="btn btn-info table-striped">[[#{table.edit}]]</a>
+                </td>
+
             </tr>
             </tbody>
         </table>
     </div>
     <div><!--<div>&nbsp;</div>-->
-        [[#{table.totalItems}]] [[${totalItems}]] - [[#{table.page}]] [[${currentPage}]] [[#{table.of}]] [[${totalPages}]]
+        [[#{table.totalItems}]] [[${totalItems}]] - [[#{table.page}]] [[${currentPage}]] [[#{table.of}]]
+        [[${totalPages}]]
         &nbsp; - &nbsp;
         <!--First page-->
         <a th:if="${currentPage > 1}" th:href="@{'/page/1' +'?sortField='

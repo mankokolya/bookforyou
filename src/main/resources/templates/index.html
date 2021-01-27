@@ -12,12 +12,12 @@
 <br>
 <br>
 <div class="container">
-    <div><h3>Books Available</h3>
+    <div><h3>[[#{table.title}]]</h3>
         <hr/>
 
-        <a th:href="@{/books/new}" class="btn btn-primary table-striped">Add Book</a>
-        <a class="btn btn-danger table-striped">Delete</a>
-        <a class="btn btn-info table-striped">Edit</a>
+        <a th:href="@{/books/new}" class="btn btn-primary table-striped">[[#{table.new}]]</a>
+        <a class="btn btn-danger table-striped">[[#{table.delete}]]</a>
+        <a class="btn btn-info table-striped">[[#{table.edit}]]</a>
     </div>
     <div>
         <table class="table table-bordered table-stripped table-hover">
@@ -25,18 +25,18 @@
             <tr>
                 <th>
                     <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=id&sortDir=' + ${reverseSortDir}}">ID </a>
+                    + '?sortField=id&sortDir=' + ${reverseSortDir}}">[[#{table.id}]]</a>
                 </th>
                 <th>
                     <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=title&sortDir=' + ${reverseSortDir}}">Book Title</a>
+                    + '?sortField=title&sortDir=' + ${reverseSortDir}}">[[#{table.bookTitle}]]</a>
                 </th>
                 <th>
                     <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">Book Author</a>
+                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">[[#{table.author}]]</a>
                 </th>
-                <th>Category</th>
-                <th>Book Description</th>
+                <th>[[#{table.category}]]</th>
+                <th>[[#{table.description}]]</th>
             </tr>
             </thead>
             <tbody>
@@ -59,17 +59,17 @@
         </table>
     </div>
     <div><!--<div>&nbsp;</div>-->
-        Total items: [[${totalItems}]] - Page [[${currentPage}]] of [[${totalPages}]]
+        [[#{table.totalItems}]] [[${totalItems}]] - [[#{table.page}]] [[${currentPage}]] [[#{table.of}]] [[${totalPages}]]
         &nbsp; - &nbsp;
         <!--First page-->
         <a th:if="${currentPage > 1}" th:href="@{'/page/1' +'?sortField='
-            + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+            + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.firstPage}]]</a>
         <!--        <span th:unless="${currentPage > 1}">First</span>-->
         &nbsp;
 
         <!--Previous page-->
         <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}
-            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.previousPage}]]</a>
         &nbsp;
 
         <!--Paging-->
@@ -82,13 +82,13 @@
 
         <!--Next page-->
         <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}
-            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.nextPage}]]</a>
         <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
         &nbsp;
 
         <!--Last page-->
         <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}
-            + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+            + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.lastPage}]]</a>
         <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
         &nbsp;
     </div>

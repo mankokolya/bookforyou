@@ -3,7 +3,7 @@ package com.library.bookforyou.services;
 import com.library.bookforyou.models.Role;
 import com.library.bookforyou.models.User;
 import com.library.bookforyou.repositories.UserRepository;
-import com.library.bookforyou.web.dto.UserRegistrationDto;
+import com.library.bookforyou.web.dto.userDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,15 +29,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserRegistrationDto registrationDto) {
+    public User save(userDTO registrationDto) {
         User user = new User(registrationDto.getFirstName(), registrationDto.getLastName(),
                 registrationDto.getEmail(), passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("USER")));
         return userRepository.save(user);
     }
 
     @Override
+    public boolean userExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username);
+        User user = userRepository.findByEmail(username).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }

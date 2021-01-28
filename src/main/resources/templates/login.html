@@ -10,11 +10,17 @@
 <div th:replace="fragments :: menu">Menu</div>
 <br/>
 <br/>
+<br/>
 <!--login form-->
 <div class="container">
     <div class="row">
         <!--bootstrap, css grid system-->
         <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">[[#{registration.successful}]]</div>
+            </div>
+
             <h1>[[#{login.login}]]</h1>
             <form th:action="@{/login}" method="post">
 

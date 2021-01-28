@@ -14,39 +14,34 @@
 <br>
 <br>
 
-<!-- BEGIN SEARCH RESULT &ndash;&gt;-->
-
-
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <div><h3 class="col">[[#{table.title}]]</h3></div>
-            <div class="col-md-4">
-                <form class="example" action="action_page.php">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
+    <!-- Title-->
+    <div class="row">
+        <div class="col-md-12 text-center"><h2 class="col">[[#{table.title}]]</h2></div>
+    </div>
+    <br>
+
+    <!-- Add button and serch input-->
+    <div class="row">
+        <div class="col-md-6">
+            <a sec:authorize="isAuthenticated()" th:href="@{/books/new}"
+               class="btn btn-primary table-striped">[[#{table.new}]]</a>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group" th:href="@{books/search}">
+                <input type="text" class="form-control" value="web development">
+                <span class="input-group-btn">
+                <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+            </span>
             </div>
         </div>
     </div>
-    <hr/>
-
-    <div>
-        <a sec:authorize="isAuthenticated()" th:href="@{/books/new}"
-           class="btn btn-primary table-striped">[[#{table.new}]]</a>
-    </div>
-
-    <div>
-
-    </div>
+    <!--table with books-->
     <div>
         <table class="table table-bordered table-stripped table-hover">
             <thead class="thread-dark">
             <tr>
-                <th>
-                    <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=id&sortDir=' + ${reverseSortDir}}">[[#{table.id}]]</a>
-                </th>
+                <th>№</th>
                 <th>
                     <a th:href="@{'/page/' + ${currentPage}
                     + '?sortField=title&sortDir=' + ${reverseSortDir}}">[[#{table.bookTitle}]]</a>
@@ -63,7 +58,7 @@
             <tbody>
             <tr th:each="book, iterStat : ${books}"
                 th:class="${iterStat.even == true ? 'text-primary' : 'text-success'}">
-                <td th:text="${book.id}">ID</td>
+                <td th:text="${iterStat.index + 1}">Index</td>
                 <td th:text="${book.title}">Title</td>
                 <td>
                     <p th:each="author : ${book.getAuthors()}">
@@ -83,7 +78,9 @@
             </tbody>
         </table>
     </div>
-    <div><!--<div>&nbsp;</div>-->
+
+    <!--Paging-->
+    <div class="text-center"><!--<div>&nbsp;</div>-->
         [[#{table.totalItems}]] [[${totalItems}]] - [[#{table.page}]] [[${currentPage}]] [[#{table.of}]]
         [[${totalPages}]]
         &nbsp; - &nbsp;
@@ -100,16 +97,16 @@
 
         <!--Paging-->
         <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-            <a th:if="${i != currentPage}" th:href="@{'/page/' + ${i}
-                +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
-            <span th:unless="${i != currentPage}">[[${i}]]</span>
-            &nbsp;
-        </span>
+                    <a th:if="${i != currentPage}" th:href="@{'/page/' + ${i}
+                        +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                    <span th:unless="${i != currentPage}">[[${i}]]</span>
+                    &nbsp;
+                </span>
 
         <!--Next page-->
         <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}
-            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.nextPage}]]</a>
-        <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+                    +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.nextPage}]]</a>
+        <span th:unless="${currentPage < totalPages}">Next</span>
         &nbsp;
 
         <!--Last page-->
@@ -118,6 +115,7 @@
         <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
         &nbsp;
     </div>
+
 </div>
 
 <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
@@ -157,14 +155,16 @@
 <!--                            &lt;!&ndash; BEGIN FILTER BY DATE &ndash;&gt;-->
 <!--                            <h4>By date:</h4>-->
 <!--                            From-->
-<!--                            <div class="input-group date form_date" data-date="2014-06-14T05:25:07Z" data-date-format="dd-mm-yyyy" data-link-field="dtp_input1">-->
+<!--                            <div class="input-group date form_date" data-date="2014-06-14T05:25:07Z"-->
+<!--                                 data-date-format="dd-mm-yyyy" data-link-field="dtp_input1">-->
 <!--                                <input type="text" class="form-control">-->
 <!--                                <span class="input-group-addon bg-blue"><i class="fa fa-th"></i></span>-->
 <!--                            </div>-->
 <!--                            <input type="hidden" id="dtp_input1" value="">-->
 
 <!--                            To-->
-<!--                            <div class="input-group date form_date" data-date="2014-06-14T05:25:07Z" data-date-format="dd-mm-yyyy" data-link-field="dtp_input2">-->
+<!--                            <div class="input-group date form_date" data-date="2014-06-14T05:25:07Z"-->
+<!--                                 data-date-format="dd-mm-yyyy" data-link-field="dtp_input2">-->
 <!--                                <input type="text" class="form-control">-->
 <!--                                <span class="input-group-addon bg-blue"><i class="fa fa-th"></i></span>-->
 <!--                            </div>-->
@@ -175,9 +175,24 @@
 
 <!--                            &lt;!&ndash; BEGIN FILTER BY PRICE &ndash;&gt;-->
 <!--                            <h4>By price:</h4>-->
-<!--                            Between <div id="price1">$300</div> to <div id="price2">$800</div>-->
+<!--                            Between-->
+<!--                            <div id="price1">$300</div>-->
+<!--                            to-->
+<!--                            <div id="price2">$800</div>-->
 <!--                            <div class="slider-primary">-->
-<!--                                <div class="slider slider-horizontal" style="width: 152px;"><div class="slider-track"><div class="slider-selection" style="left: 30%; width: 50%;"></div><div class="slider-handle round" style="left: 30%;"></div><div class="slider-handle round" style="left: 80%;"></div></div><div class="tooltip top hide" style="top: -30px; left: 50.1px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">300 : 800</div></div><input type="text" class="slider" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="[300,800]" data-slider-tooltip="hide"></div>-->
+<!--                                <div class="slider slider-horizontal" style="width: 152px;">-->
+<!--                                    <div class="slider-track">-->
+<!--                                        <div class="slider-selection" style="left: 30%; width: 50%;"></div>-->
+<!--                                        <div class="slider-handle round" style="left: 30%;"></div>-->
+<!--                                        <div class="slider-handle round" style="left: 80%;"></div>-->
+<!--                                    </div>-->
+<!--                                    <div class="tooltip top hide" style="top: -30px; left: 50.1px;">-->
+<!--                                        <div class="tooltip-arrow"></div>-->
+<!--                                        <div class="tooltip-inner">300 : 800</div>-->
+<!--                                    </div>-->
+<!--                                    <input type="text" class="slider" value="" data-slider-min="0"-->
+<!--                                           data-slider-max="1000" data-slider-step="1" data-slider-value="[300,800]"-->
+<!--                                           data-slider-tooltip="hide"></div>-->
 <!--                            </div>-->
 <!--                            &lt;!&ndash; END FILTER BY PRICE &ndash;&gt;-->
 <!--                        </div>-->
@@ -190,8 +205,8 @@
 <!--                            <div class="input-group">-->
 <!--                                <input type="text" class="form-control" value="web development">-->
 <!--                                <span class="input-group-btn">-->
-<!--                <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>-->
-<!--              </span>-->
+<!--                                     <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>-->
+<!--                                 </span>-->
 <!--                            </div>-->
 <!--                            &lt;!&ndash; END SEARCH INPUT &ndash;&gt;-->
 <!--                            <p>Showing all results matching "web development"</p>-->
@@ -202,7 +217,8 @@
 <!--                                &lt;!&ndash; BEGIN ORDER RESULT &ndash;&gt;-->
 <!--                                <div class="col-sm-6">-->
 <!--                                    <div class="btn-group">-->
-<!--                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
+<!--                                        <button type="button" class="btn btn-default dropdown-toggle"-->
+<!--                                                data-toggle="dropdown">-->
 <!--                                            Order by <span class="caret"></span>-->
 <!--                                        </button>-->
 <!--                                        <ul class="dropdown-menu" role="menu">-->
@@ -217,7 +233,8 @@
 
 <!--                                <div class="col-md-6 text-right">-->
 <!--                                    <div class="btn-group">-->
-<!--                                        <button type="button" class="btn btn-default active"><i class="fa fa-list"></i></button>-->
+<!--                                        <button type="button" class="btn btn-default active"><i class="fa fa-list"></i>-->
+<!--                                        </button>-->
 <!--                                        <button type="button" class="btn btn-default"><i class="fa fa-th"></i></button>-->
 <!--                                    </div>-->
 <!--                                </div>-->
@@ -226,63 +243,103 @@
 <!--                            &lt;!&ndash; BEGIN TABLE RESULT &ndash;&gt;-->
 <!--                            <div class="table-responsive">-->
 <!--                                <table class="table table-hover">-->
-<!--                                    <tbody><tr>-->
+<!--                                    <tbody>-->
+<!--                                    <tr>-->
 <!--                                        <td class="number text-center">1</td>-->
-<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/FF8C00" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 1</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>-->
+<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/FF8C00" alt="">-->
+<!--                                        </td>-->
+<!--                                        <td class="product"><strong>Product 1</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>-->
 <!--                                        <td class="price text-right">$350</td>-->
 <!--                                    </tr>-->
 <!--                                    <tr>-->
 <!--                                        <td class="number text-center">2</td>-->
-<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/5F9EA0" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 2</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>-->
+<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/5F9EA0" alt="">-->
+<!--                                        </td>-->
+<!--                                        <td class="product"><strong>Product 2</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>-->
 <!--                                        <td class="price text-right">$1,050</td>-->
 <!--                                    </tr>-->
 <!--                                    <tr>-->
 <!--                                        <td class="number text-center">3</td>-->
 <!--                                        <td class="image"><img src="https://via.placeholder.com/50x50" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 3</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>-->
+<!--                                        <td class="product"><strong>Product 3</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>-->
 <!--                                        <td class="price text-right">$550</td>-->
 <!--                                    </tr>-->
 <!--                                    <tr>-->
 <!--                                        <td class="number text-center">4</td>-->
-<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/8A2BE2" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 4</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></span></td>-->
+<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/8A2BE2" alt="">-->
+<!--                                        </td>-->
+<!--                                        <td class="product"><strong>Product 4</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star-o"></i></span></td>-->
 <!--                                        <td class="price text-right">$330</td>-->
 <!--                                    </tr>-->
 <!--                                    <tr>-->
 <!--                                        <td class="number text-center">5</td>-->
 <!--                                        <td class="image"><img src="https://via.placeholder.com/50x50" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 5</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>-->
+<!--                                        <td class="product"><strong>Product 5</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i></span></td>-->
 <!--                                        <td class="price text-right">$540</td>-->
 <!--                                    </tr>-->
 <!--                                    <tr>-->
 <!--                                        <td class="number text-center">6</td>-->
-<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/6495ED" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 6</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>-->
+<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/6495ED" alt="">-->
+<!--                                        </td>-->
+<!--                                        <td class="product"><strong>Product 6</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>-->
 <!--                                        <td class="price text-right">$870</td>-->
 <!--                                    </tr>-->
 <!--                                    <tr>-->
 <!--                                        <td class="number text-center">7</td>-->
-<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/DC143C" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 7</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>-->
+<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/DC143C" alt="">-->
+<!--                                        </td>-->
+<!--                                        <td class="product"><strong>Product 7</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star-o"></i><i-->
+<!--                                                class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>-->
 <!--                                        <td class="price text-right">$620</td>-->
 <!--                                    </tr>-->
 <!--                                    <tr>-->
 <!--                                        <td class="number text-center">8</td>-->
-<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/9932CC" alt=""></td>-->
-<!--                                        <td class="product"><strong>Product 8</strong><br>This is the product description.</td>-->
-<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>-->
+<!--                                        <td class="image"><img src="https://via.placeholder.com/50x50/9932CC" alt="">-->
+<!--                                        </td>-->
+<!--                                        <td class="product"><strong>Product 8</strong><br>This is the product-->
+<!--                                            description.-->
+<!--                                        </td>-->
+<!--                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star"></i><i-->
+<!--                                                class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>-->
 <!--                                        <td class="price text-right">$1,550</td>-->
 <!--                                    </tr>-->
-<!--                                    </tbody></table>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
 <!--                            </div>-->
 <!--                            &lt;!&ndash; END TABLE RESULT &ndash;&gt;-->
 

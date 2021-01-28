@@ -1,19 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
     <title>[[${pageTitle}]] Book For You</title>
     <div th:replace="fragments :: dependencies">Dependencies</div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="searchButton.css">
 </head>
 <body>
 <div th:replace="fragments :: menu">Menu</div>
 <br>
 <br>
 <br>
+
+<!-- BEGIN SEARCH RESULT &ndash;&gt;-->
+
+
 <div class="container">
-    <div><h3>[[#{table.title}]]</h3>
-        <hr/>
-        <a th:href="@{/books/new}" class="btn btn-primary table-striped">[[#{table.new}]]</a>
+    <div class="container">
+        <div class="row">
+            <div><h3 class="col">[[#{table.title}]]</h3></div>
+            <div class="col-md-4">
+                <form class="example" action="action_page.php">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+    <div>
+        <a sec:authorize="isAuthenticated()" th:href="@{/books/new}"
+           class="btn btn-primary table-striped">[[#{table.new}]]</a>
+    </div>
+
+    <div>
+
     </div>
     <div>
         <table class="table table-bordered table-stripped table-hover">
@@ -33,7 +57,7 @@
                 </th>
                 <th>[[#{table.category}]]</th>
                 <th>[[#{table.description}]]</th>
-                <th>[[#{table.action}]]</th>
+                <th sec:authorize="isAuthenticated()">[[#{table.action}]]</th>
             </tr>
             </thead>
             <tbody>
@@ -51,11 +75,10 @@
                     </p>
                 </td>
                 <td th:text="${book.description}">Description</td>
-                <td>
+                <td sec:authorize="isAuthenticated()">
                     <a class="btn btn-danger table-striped">[[#{table.delete}]]</a>
                     <a class="btn btn-info table-striped">[[#{table.edit}]]</a>
                 </td>
-
             </tr>
             </tbody>
         </table>

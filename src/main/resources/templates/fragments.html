@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">>
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>Fragments</head>
 
 <body>
@@ -50,7 +50,8 @@
                     <li><a href="#">[[#{menu.category}]]</a></li>
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right" th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">
+                <ul class="nav navbar-nav navbar-right" th:with="currentUrl=(${#httpServletRequest.requestURI + '?'
+                 + #strings.defaultString(#httpServletRequest.queryString, '')})">
 
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{${currentUrl}(lang=en)}">
@@ -67,8 +68,8 @@
                         </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li sec:authorize="isAuthenticated()"><a th:href="@{/home}">
-                        <span class="glyphicon glyphicon-user" sec:authentication="principal.username"> User</span> </a>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">
+                        <span class="glyphicon glyphicon-user" sec:authentication="principal.username">Profile</span> </a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a th:href="@{/registration}"><span

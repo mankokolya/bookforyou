@@ -27,7 +27,6 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
     private Set<Author> authors;
 
-
     private String publishedDate;
 
     @ManyToMany(fetch = FetchType.EAGER,

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class MainController {
         return goHome(model);
     }
 
+    @PostMapping("/login")
+    public String success(Model model) {
+        return goHome(model);
+    }
 
     @GetMapping("/home")
     public String goHome(Model model) {

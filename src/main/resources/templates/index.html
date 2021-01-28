@@ -6,7 +6,8 @@
     <title>[[${pageTitle}]] Book For You</title>
     <div th:replace="fragments :: dependencies">Dependencies</div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="searchButton.css">
+    <link rel="stylesheet" href="search.css">
+
 </head>
 <body>
 <div th:replace="fragments :: menu">Menu</div>
@@ -20,101 +21,100 @@
         <div class="col-md-12 text-center"><h2 class="col">[[#{table.title}]]</h2></div>
     </div>
     <br>
+</div>
 
-    <!-- Add button and serch input-->
-    <div class="row">
-        <div class="col-md-6">
-            <a sec:authorize="isAuthenticated()" th:href="@{/books/new}"
-               class="btn btn-primary table-striped">[[#{table.new}]]</a>
+<!-- Add button and search input-->
+<!--table with books-->
+<div class="container">
+
+    <a sec:authorize="isAuthenticated()" th:href="@{/books/new}"
+       class="btn btn-primary table-striped">[[#{table.new}]]</a>
+
+    <form th:object="${lecture}" method="post">
+        <div class="text-right">
+            <input type="text" name="subject"/><!--th:field="*{subject}"-->
+            <input type="submit" value="Search">
         </div>
-        <div class="col-md-6">
-            <div class="input-group" th:href="@{books/search}">
-                <input type="text" class="form-control" value="web development">
-                <span class="input-group-btn">
-                <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
-            </span>
-            </div>
-        </div>
-    </div>
-    <!--table with books-->
-    <div>
-        <table class="table table-bordered table-stripped table-hover">
-            <thead class="thread-dark">
-            <tr>
-                <th>№</th>
-                <th>
-                    <a th:href="@{'/page/' + ${currentPage}
+    </form>
+
+
+    <table class="table table-bordered table-stripped table-hover">
+        <thead class="thread-dark">
+        <tr>
+            <th>№</th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage}
                     + '?sortField=title&sortDir=' + ${reverseSortDir}}">[[#{table.bookTitle}]]</a>
-                </th>
-                <th>
-                    <a th:href="@{'/page/' + ${currentPage}
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage}
                     + '?sortField=authors&sortDir=' + ${reverseSortDir}}">[[#{table.author}]]</a>
-                </th>
-                <th>[[#{table.category}]]</th>
-                <th>[[#{table.description}]]</th>
-                <th sec:authorize="isAuthenticated()">[[#{table.action}]]</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="book, iterStat : ${books}"
-                th:class="${iterStat.even == true ? 'text-primary' : 'text-success'}">
-                <td th:text="${iterStat.index + 1}">Index</td>
-                <td th:text="${book.title}">Title</td>
-                <td>
-                    <p th:each="author : ${book.getAuthors()}">
-                        <span th:text="${author.getName()}">Author</span>
-                    </p>
-                <td>
-                    <p th:each="category : ${book.categories}">
-                        <span th:text=" ${category.name}">Category</span>
-                    </p>
-                </td>
-                <td th:text="${book.description}">Description</td>
-                <td sec:authorize="isAuthenticated()">
-                    <a class="btn btn-danger table-striped">[[#{table.delete}]]</a>
-                    <a class="btn btn-info table-striped">[[#{table.edit}]]</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+            </th>
+            <th>[[#{table.category}]]</th>
+            <th>[[#{table.description}]]</th>
+            <th sec:authorize="isAuthenticated()">[[#{table.action}]]</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book, iterStat : ${books}"
+            th:class="${iterStat.even == true ? 'text-primary' : 'text-success'}">
+            <td th:text="${iterStat.index + 1}">Index</td>
+            <td th:text="${book.title}">Title</td>
+            <td>
+                <p th:each="author : ${book.getAuthors()}">
+                    <span th:text="${author.getName()}">Author</span>
+                </p>
+            <td>
+                <p th:each="category : ${book.categories}">
+                    <span th:text=" ${category.name}">Category</span>
+                </p>
+            </td>
+            <td th:text="${book.description}">Description</td>
+            <td sec:authorize="isAuthenticated()">
+                <a class="btn btn-danger table-striped">[[#{table.delete}]]</a>
+                <a class="btn btn-info table-striped">[[#{table.edit}]]</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--Paging-->
+<div class="text-center"><!--<div>&nbsp;</div>-->
+    [[#{table.totalItems}]] [[${totalItems}]] - [[#{table.page}]] [[${currentPage}]] [[#{table.of}]]
+    [[${totalPages}]]
+    &nbsp; - &nbsp;
+    <!--First page-->
+    <a th:if="${currentPage > 1}" th:href="@{'/page/1' +'?sortField='
+            + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.firstPage}]]</a>
+    <!--        <span th:unless="${currentPage > 1}">First</span>-->
+    &nbsp;
+
+    <!--Previous page-->
+    <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}
+            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.previousPage}]]</a>
+    &nbsp;
 
     <!--Paging-->
-    <div class="text-center"><!--<div>&nbsp;</div>-->
-        [[#{table.totalItems}]] [[${totalItems}]] - [[#{table.page}]] [[${currentPage}]] [[#{table.of}]]
-        [[${totalPages}]]
-        &nbsp; - &nbsp;
-        <!--First page-->
-        <a th:if="${currentPage > 1}" th:href="@{'/page/1' +'?sortField='
-            + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.firstPage}]]</a>
-        <!--        <span th:unless="${currentPage > 1}">First</span>-->
-        &nbsp;
-
-        <!--Previous page-->
-        <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}
-            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.previousPage}]]</a>
-        &nbsp;
-
-        <!--Paging-->
-        <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
                     <a th:if="${i != currentPage}" th:href="@{'/page/' + ${i}
                         +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
                     <span th:unless="${i != currentPage}">[[${i}]]</span>
                     &nbsp;
                 </span>
 
-        <!--Next page-->
-        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}
+    <!--Next page-->
+    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}
                     +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.nextPage}]]</a>
-        <span th:unless="${currentPage < totalPages}">Next</span>
-        &nbsp;
+    <span th:unless="${currentPage < totalPages}">Next</span>
+    &nbsp;
 
-        <!--Last page-->
-        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}
+    <!--Last page-->
+    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}
             + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.lastPage}]]</a>
-        <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
-        &nbsp;
-    </div>
+    <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+    &nbsp;
+</div>
 
 </div>
 

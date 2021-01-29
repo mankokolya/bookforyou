@@ -26,7 +26,8 @@ public class BookService {
     }
 
     public void save(BookDto bookDto) {
-        bookRepository.save(new Book(bookDto.getTitle(), bookDto.getAuthors(), bookDto.getPublishedDate(),
+        bookRepository.save(new Book(bookDto.getTitle(), bookDto.getAuthors(), bookDto.getQuantity(),
+                bookDto.getPublisher(), bookDto.getPublishedDate(),
                 bookDto.getCategories(), bookDto.getDescription()));
     }
 }

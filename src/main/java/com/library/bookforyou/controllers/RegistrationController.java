@@ -31,6 +31,7 @@ public class RegistrationController {
     public RegistrationController(UserService userService) {
         this.userService = userService;
     }
+
     @PostMapping
     public String registerUserAccount(@Valid @ModelAttribute("user") userDTO userDTO,
                                       BindingResult bindingResult) {
@@ -51,8 +52,7 @@ public class RegistrationController {
                         "Password must match"));
             }
         }
-
-        userService.save(userDTO);
+        userService.saveUser(userDTO);
         return "redirect:/login?success";
     }
 

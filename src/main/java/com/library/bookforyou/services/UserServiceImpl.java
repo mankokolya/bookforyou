@@ -1,7 +1,9 @@
 package com.library.bookforyou.services;
 
 import com.library.bookforyou.models.Role;
+import com.library.bookforyou.models.Roles;
 import com.library.bookforyou.models.User;
+import com.library.bookforyou.repositories.RoleRepository;
 import com.library.bookforyou.repositories.UserRepository;
 import com.library.bookforyou.web.dto.userDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,25 +16,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
-    public User save(userDTO registrationDto) {
-        User user = new User(registrationDto.getFirstName(), registrationDto.getLastName(),
-                registrationDto.getEmail(), passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("USER")));
-        return userRepository.save(user);
+    public boolean saveUser(userDTO userDTO) {
+        Optional<User> userFromDB = userRepository.findByEmail(userDTO.getEmail());
+        if (userFromDB.isPresent()) {
+            return false;
+        }
+        User user = new User(userDTO.getFirstName(), userDTO.getLastName(),
+                userDTO.getEmail(), passwordEncoder.encode(userDTO.getPassword()));
+        user.addRole(new Role(Roles.USER.name()));
+        userRepository.save(user);
+        return true;
     }
 
     @Override
@@ -41,8 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username).orElse(null);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -51,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName()))
+        return roles.stream().map(userRole -> new SimpleGrantedAuthority(userRole.getRole()))
                 .collect(Collectors.toList());
     }
 }

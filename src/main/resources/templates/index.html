@@ -6,7 +6,6 @@
     <title>[[${pageTitle}]] Book For You</title>
     <div th:replace="fragments :: dependencies">Dependencies</div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="search.css">
 
 </head>
 <body>
@@ -18,7 +17,18 @@
 <div class="container">
     <!-- Title-->
     <div class="row">
-        <div class="col-md-12 text-center"><h2 class="col">[[#{table.title}]]</h2></div>
+        <div class="col-md-12">
+            <div class="col"></div>
+            <div class="col-6 text-center"><h2 class="col">[[#{table.title}]]</h2></div>
+            <div class="col">
+                <form method="post">
+                    <div class="text-right">
+                        <input type="text" name="subject"/><!--th:field="*{subject}"-->
+                        <input type="submit" value="Search">
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <br>
 </div>
@@ -29,13 +39,6 @@
 
     <a sec:authorize="isAuthenticated()" th:href="@{/books/new}"
        class="btn btn-primary table-striped">[[#{table.new}]]</a>
-
-    <form th:object="${lecture}" method="post">
-        <div class="text-right">
-            <input type="text" name="subject"/><!--th:field="*{subject}"-->
-            <input type="submit" value="Search">
-        </div>
-    </form>
 
 
     <table class="table table-bordered table-stripped table-hover">

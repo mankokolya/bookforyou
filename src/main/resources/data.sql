@@ -6,12 +6,12 @@ delete from category;
 
 delete from users_roles;
 delete from users;
-delete from role;
+delete from roles;
 delete from publisher;
 
-insert into role values (1, 'ADMIN');
--- insert into role values (2, 'USER');
--- insert into role values (3, 'LIBRARIAN');
+insert into roles values (1, 'ADMIN');
+insert into roles values (2, 'USER');
+insert into roles values (3, 'LIBRARIAN');
 
 INSERT INTO users VALUES (1, 'mankokolya@gmail.com', 'Mykola', 'Manko',
                           '$2y$12$3/SLz8PouovfM/CqC.nOt.wOXzSwSkq7WKZ8DVuTL0D/lTL0c6m5y');

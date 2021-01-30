@@ -19,8 +19,8 @@ public class BookService {
 
     public Page<Book> listAll(int pageNumber, String sortField, String sortDir) {
         int pageSize = 2;
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sortDir.equals("asc") ?
-                Sort.by(sortField).ascending() : Sort.by(sortField).descending()
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize,
+                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
         );
         return bookRepository.findAll(pageable);
     }

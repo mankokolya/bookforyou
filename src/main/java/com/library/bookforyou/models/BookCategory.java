@@ -12,7 +12,7 @@ import javax.persistence.*;
 @ToString(onlyExplicitlyIncluded = true)
 public class BookCategory {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private int id;
 
     @Column(unique=true)

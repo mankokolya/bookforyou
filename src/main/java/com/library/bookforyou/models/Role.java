@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -23,6 +23,10 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     private String role;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+
     public Role(String role_user) {
     }
 

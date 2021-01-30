@@ -14,11 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@link UserService} interface
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -31,16 +32,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-
     @Override
     public boolean saveUser(userDTO userDTO) {
-        Optional<User> userFromDB = userRepository.findByEmail(userDTO.getEmail());
-        if (userFromDB.isPresent()) {
+        if (userExists(userDTO.getEmail())) {
             return false;
         }
         User user = new User(userDTO.getFirstName(), userDTO.getLastName(),
                 userDTO.getEmail(), passwordEncoder.encode(userDTO.getPassword()));
-        user.addRole(new Role(Roles.USER.name()));
+        user.addRole(roleRepository.getOne(2L));
         userRepository.save(user);
         return true;
     }
@@ -52,16 +51,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+                user.get().getEmail(), user.get().getPassword(),
+                mapRolesToAuthorities(user.get().getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(userRole -> new SimpleGrantedAuthority(userRole.getRole()))
+        return roles.stream()
+                .map(userRole -> new SimpleGrantedAuthority(userRole.getRole()))
                 .collect(Collectors.toList());
     }
 }

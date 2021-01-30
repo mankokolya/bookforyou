@@ -55,14 +55,14 @@
             </th>
             <th>
                 <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">[[#{table.category}]]</a>
+                    + '?sortField=categories&sortDir=' + ${reverseSortDir}}">[[#{table.category}]]</a>
             </th>
             <th><a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">[[#{table.publisher}]]</a></th>
+                    + '?sortField=publisher&sortDir=' + ${reverseSortDir}}">[[#{table.publisher}]]</a></th>
             <th><a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">[[#{table.year}]]</a></th>
+                    + '?sortField=publishedDate&sortDir=' + ${reverseSortDir}}">[[#{table.year}]]</a></th>
             <th><a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">[[#{table.amount}]]</a></th>
+                    + '?sortField=quantity&sortDir=' + ${reverseSortDir}}">[[#{table.amount}]]</a></th>
             <th>[[#{table.description}]]</th>
             <th sec:authorize="isAuthenticated()"></th>
         </tr>

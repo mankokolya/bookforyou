@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name = "book", uniqueConstraints = @UniqueConstraint(columnNames="title"))
+@Table(name = "book", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,10 +36,10 @@ public class Book {
 
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(referencedColumnName="id")
+    @JoinColumn(referencedColumnName = "id")
     private Publisher publisher;
 
-    @Column(name="published_date")
+    @Column(name = "published_date", columnDefinition = "DATE")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishedDate;
 

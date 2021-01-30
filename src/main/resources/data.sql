@@ -5,14 +5,13 @@ delete from author;
 delete from category;
 
 delete from users_roles;
-delete from role_users;
 delete from users;
 delete from role;
 delete from publisher;
 
 insert into role values (1, 'ADMIN');
-insert into role values (2, 'USER');
-insert into role values (3, 'LIBRARIAN');
+-- insert into role values (2, 'USER');
+-- insert into role values (3, 'LIBRARIAN');
 
 INSERT INTO users VALUES (1, 'mankokolya@gmail.com', 'Mykola', 'Manko',
                           '$2y$12$3/SLz8PouovfM/CqC.nOt.wOXzSwSkq7WKZ8DVuTL0D/lTL0c6m5y');
@@ -29,21 +28,22 @@ INSERT INTO publisher values (5, 'РОСМЭН'); --Гарри Потер
 INSERT INTO publisher values (6, 'Брайт Букс'); --Богатий тато
 
 
-insert into book values (1,
+insert into book(id, description, published_date, quantity, title, publisher_id) values (1,
                          'Java 7: A Beginner''s Guide, Fifth Edition will have you programming in Java right away. ',
                          '13-10-2017',
                          10,
                          'Java. A Beginner''s Guid',
                          2);
 
-insert into book values (2,
+insert into book(id, description, published_date, quantity, title, publisher_id) values (2,
                          'When the Knight Bus crashes through the darkness and screeches to a halt in front of him, ' ||
                             'it''s the start of another far from ordinary year at Hogwarts for Harry Potter. ',
-                         '20 November 2015',
+                         '20-11-2015',
                          25,
                          'Harry Potter and the Prisoner of Azkaban',
                          1);
-insert into book values (3, 'В "Приключениях Гекльберри Финна" - прямом сюжетном продолжении романа "Приключения ' ||
+insert into book(id, description, published_date, quantity, title, publisher_id) values (3,
+                            'В "Приключениях Гекльберри Финна" - прямом сюжетном продолжении романа "Приключения ' ||
                             'Тома Сойера" - пестрая жизнь американской глубинки сороковых годов XIX века увидена ' ||
                             'глазами двух беглецов, уносимых на деревянном плоту великой рекой Миссисипи: один из них - ' ||
                             'заглавный герой, удравший от невыносимо скучной благонамеренной жизни у вдовы Дуглас и ' ||
@@ -53,7 +53,8 @@ insert into book values (3, 'В "Приключениях Гекльберри �
                          5,
                          'Приключения Гекльберри Финна',
                          3);
-insert into book values (4, 'Winter is coming. Such is the stern motto of House Stark, the northernmost of the fiefdoms ' ||
+insert into book (id, description, published_date, quantity, title, publisher_id) values (4,
+                            'Winter is coming. Such is the stern motto of House Stark, the northernmost of the fiefdoms ' ||
                             'that owe allegiance to King Robert Baratheon in far-off King''s Landing. There Eddard Stark ' ||
                             'of Winterfell rules in Robert''s name. There his family dwells in peace and comfort: his ' ||
                             'proud wife, Catelyn; his sons Robb, Brandon, and Rickon; his daughters Sansa and Arya; ' ||
@@ -70,25 +71,28 @@ insert into book values (4, 'Winter is coming. Such is the stern motto of House 
                             'Targaryen, which once ruled all of Westeros, schemes to reclaim the throne with an army of ' ||
                             'barbarian Dothraki—whose loyalty he will purchase in the only coin left to him: his ' ||
                             'beautiful yet innocent sister, Daenerys.',
-                         '14 August 2003',
+                         '14-08-2003',
                          1,
                          'A Game of Thrones',
                          4);
-insert into book values (5, 'Максимально повне зібрання поетового спадку, яке поєднало всі твори, що потрапляли під ' ||
+insert into book (id, description, published_date, quantity, title, publisher_id) values (5,
+                            'Максимально повне зібрання поетового спадку, яке поєднало всі твори, що потрапляли під ' ||
                             'цензурування як за царату, так і за радянщини. До того ж чимало творів подано з авторовими ' ||
                             'варіянтами, практично невідомими широкому загалові.',
                          '10-07-2018',
                          5,
                          'Кобзар',
                          3);
-insert into book values (6, 'Повесть-сказка о добром докторе Айболите и его удивительных приключениях в Африке, ' ||
+insert into book (id, description, published_date, quantity, title, publisher_id) values (6,
+                            'Повесть-сказка о добром докторе Айболите и его удивительных приключениях в Африке, ' ||
                             'пересказанная для детей Корнеем Ивановичем Чуковским по мотивам известной ' ||
                             'книги английского писателя Гью Лофтинга.',
                          '10-12-2019',
                          10,
                          'Доктор Айболит',
                          3);
-insert into book values (7, 'Гарри Поттера ждёт самое страшное испытание в жизни — смертельная схватка с Волан-де-Мортом.' ||
+insert into book (id, description, published_date, quantity, title, publisher_id) values (7,
+                            'Гарри Поттера ждёт самое страшное испытание в жизни — смертельная схватка с Волан-де-Мортом.' ||
                             ' Ждать помощи не от кого — Гарри одинок как никогда. Друзья и враги Гарри предстают в ' ||
                             'совершенно неожиданном свете. Граница между Добром и Злом становится всё призрачнее… ' ||
                             'В седьмой, финальной книге Дж. К. Роулинг раскрывает все магические тайны.',
@@ -96,13 +100,15 @@ insert into book values (7, 'Гарри Поттера ждёт самое ст�
                          1,
                          'Гарри Поттер и Дары Cмерти',
                         5);
-insert into book values (8, 'Whether you''re a beginner or an experienced pro, you''ll ' ||
-                            'find recipes that are sure to satisfy your Java programming appetite!',
+insert into book (id, description, published_date, quantity, title, publisher_id)values (8,
+                        'Whether you''re a beginner or an experienced pro, you''ll ' ||
+                        'find recipes that are sure to satisfy your Java programming appetite!',
                          '05 November 2007',
                          10,
                          'Herb Schildt''s Java Programming Cookbook',
                          2);
-insert into book values (9, 'Роберт Кіосакі переконаний, що в школі наші діти не отримують потрібних фінансових знань і ' ||
+insert into book (id, description, published_date, quantity, title, publisher_id) values (9,
+                            'Роберт Кіосакі переконаний, що в школі наші діти не отримують потрібних фінансових знань і ' ||
                             'потім все життя працюють заради грошей, замість того щоб змусити гроші працювати на себе. ' ||
                             'Він порадував читачів новим виданням вже культової книги зі змінами та доповненнями для ' ||
                             'сьогоднішнього світу, сьогоднішніх ринкових умов і 9 новими розділами. На жаль, у сфері ' ||

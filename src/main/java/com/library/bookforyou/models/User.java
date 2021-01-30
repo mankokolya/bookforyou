@@ -40,15 +40,18 @@ public class User {
     @Size(min = 4, max = 100)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
+//            CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+//    @JoinTable(
+//            name = "users_roles",
+//            joinColumns = @JoinColumn(
+//                    name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "role_id", referencedColumnName = "id"))
+    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles=new HashSet<>();
 
 
     public User(String firstName, String lastName, @Email @NotNull String email, @NotBlank String password) {
@@ -60,13 +63,5 @@ public class User {
 
     public void addRole(Role userRole) {
         roles.add(userRole);
-//        userRole.getUsers().add(this);
     }
-
-//    public void removeRole(Role userRole) {
-//        if (roles.contains(userRole)) {
-//            roles.remove(userRole);
-//            userRole.getUsers().remove(this);
-//        }
-//    }
 }

@@ -23,9 +23,6 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     private String role;
-    @OneToMany
-    private Set<User> users;
-
     public Role(String role_user) {
     }
 

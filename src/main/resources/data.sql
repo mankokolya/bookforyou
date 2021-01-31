@@ -13,10 +13,18 @@ insert into roles values (1, 'ADMIN');
 insert into roles values (2, 'USER');
 insert into roles values (3, 'LIBRARIAN');
 
-INSERT INTO users VALUES (1, 'mankokolya@gmail.com', 'Mykola', 'Manko',
-                          '$2y$12$3/SLz8PouovfM/CqC.nOt.wOXzSwSkq7WKZ8DVuTL0D/lTL0c6m5y');
+INSERT INTO users(id, email, first_name, last_name, password)
+VALUES (1, 'mankokolya@gmail.com', 'Mykola', 'Manko', '$2y$12$3/SLz8PouovfM/CqC.nOt.wOXzSwSkq7WKZ8DVuTL0D/lTL0c6m5y');
+
+INSERT INTO users(id, email, first_name, last_name, password)
+VALUES (2, 'manko@gmail.com', 'Mykola', 'Manko', '$2y$12$3/SLz8PouovfM/CqC.nOt.wOXzSwSkq7WKZ8DVuTL0D/lTL0c6m5y');
+
 
 INSERT INTO users_roles VALUES(1, 1);
+INSERT INTO users_roles VALUES(1, 2);
+INSERT INTO users_roles VALUES(1, 3);
+INSERT INTO users_roles VALUES(2, 3);
+INSERT INTO users_roles VALUES(2, 2);
 
 --INSERT PUBLISHER
 

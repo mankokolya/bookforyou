@@ -10,6 +10,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -37,5 +38,13 @@ public class BookService {
         bookRepository.save(new Book(bookDto.getTitle(), bookDto.getAuthors(), bookDto.getQuantity(),
                 bookDto.getPublisher(), bookDto.getPublishedDate(),
                 bookDto.getCategories(), bookDto.getDescription()));
+    }
+
+    public void deleteBook(long id) {
+        bookRepository.deleteById(id);
+    }
+
+    public Optional<Book> findBook(Long id) {
+        return bookRepository.findById(id);
     }
 }

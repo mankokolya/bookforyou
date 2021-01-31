@@ -5,9 +5,14 @@
 <head>
     <title>[[${pageTitle}]] Book For You</title>
     <div th:replace="fragments :: dependencies">Dependencies</div>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!--    <script type="text/javascript" src="webjars/jquery/3.5.0/jquery.min.js"></script>-->
+<!--    <script type="text/javascript" src="webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>-->
+<!--    <link rel="stylesheet" href="webjars/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"/>-->
+
 
 </head>
+
 <body>
 <div th:replace="fragments :: menu">Menu</div>
 <br>
@@ -37,9 +42,8 @@
 <!--table with books-->
 <div class="container">
 
-    <a sec:authorize="isAuthenticated()" th:href="@{/books/new}"
+    <a sec:authorize="hasAnyAuthority('ADMIN', 'LIBRARIAN')" th:href="@{/books/new}"
        class="btn btn-primary table-striped">[[#{table.new}]]</a>
-
 
     <table class="table table-bordered table-stripped table-hover">
         <thead class="thread-dark">
@@ -87,12 +91,17 @@
             <td th:text="${book.quantity}">Amount</td>
 
             <td th:text="${book.description}">Description</td>
-            <td sec:authorize="isAuthenticated()">
-                <a class="btn btn-danger table-striped">[[#{table.delete}]]</a>
-                <a class="btn btn-info table-striped">[[#{table.edit}]]</a>
+
+            <td sec:authorize="hasAnyAuthority('ADMIN', 'LIBRARIAN')">
+                                    <a th:href="@{/books/delete/(id=${book.getId()})}" id="deleteButton" sec:authorize="hasAuthority('ADMIN')"
+                                       class="btn btn-danger table-striped">[[#{table.delete}]]</a>
+
+                                    <a th:href="@{/books/edit}" class="btn btn-info table-striped">[[#{table.edit}]]</a>
+
             </td>
         </tr>
         </tbody>
+
     </table>
 </div>
 
@@ -133,4 +142,7 @@
     &nbsp;
 </div>
 
+
+<!--<script type="text/javascript" th:src="@{js/book.js}" src="../static/js/book.js"></script>-->
 </body>
+</html>

@@ -8,8 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 /**
  * Service class for {@link User}
  */
-public interface UserService extends UserDetailsService{
-    boolean saveUser(userDTO userRegistrationDto);
-
+public interface UserService{
+    void saveUser(userDTO userRegistrationDto);
     boolean userExists(String email);
 }

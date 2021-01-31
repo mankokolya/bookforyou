@@ -1,36 +1,151 @@
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+<!--    <title>Add or Remove Input Fields Dynamically using jQuery - MyNotePaper</title>-->
+
+<!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">-->
+<!--    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container"style="max-width: 700px;">-->
+
+<!--    <div class="text-center" style="margin: 20px 0px 20px 0px;">-->
+<!--        <a href="https://shouts.dev/" target="_blank"><img src="https://i.imgur.com/hHZjfUq.png"></a><br>-->
+<!--        <span class="text-secondary">Add or Remove Input Fields Dynamically using jQuery</span>-->
+<!--    </div>-->
+
+<!--    <form method="post" action="">-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-12">-->
+<!--                <div id="inputFormRow">-->
+<!--                    <div class="input-group mb-3">-->
+<!--                        <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">-->
+<!--                        <div class="input-group-append">-->
+<!--                            <button id="removeRow" type="button" class="btn btn-danger">Remove</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div id="newRow"></div>-->
+<!--                <button id="addRow" type="button" class="btn btn-info">Add author</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--<script type="text/javascript">-->
+<!--    // add row-->
+<!--    $("#addRow").click(function () {-->
+<!--        var html = '';-->
+<!--        html += '<div id="inputFormRow">';-->
+<!--        html += '<div class="input-group mb-3">';-->
+<!--        html += '<input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';-->
+<!--        html += '<div class="input-group-append">';-->
+<!--        html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';-->
+<!--        html += '</div>';-->
+<!--        html += '</div>';-->
+
+<!--        $('#newRow').append(html);-->
+<!--    });-->
+
+<!--    // remove row-->
+<!--    $(document).on('click', '#removeRow', function () {-->
+<!--        $(this).closest('#inputFormRow').remove();-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
-    <title>[[#{table.new}]]</title>
-    <div th:replace="fragments :: dependencies">Dependencies</div>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div th:replace="fragments :: menu">Menu</div>
-<br>
-<br>
-<br>
-<br>
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <form th:action="@{/books/save}" th:object="${book}" method="post">
-            <input type="text" th:field="${book.title}"
-                   placeholder="Book title" class="form-control mb-4 col-4">
-
-            <input type="" th:field="${book.authors}"
-                   placeholder="Book Authors" class="form-control mb-4 col-4">
-
-            <input type="" th:field="${book.categories}"
-                   placeholder="Book Categories" class="form-control mb-4 col-4">
-
-            <input type="text" th:field="${book.publishedDate}"
-                   placeholder="Published Date" class="form-control mb-4 col-4">
-
-            <input type="text" th:field="${book.description}"
-                   placeholder="Description" class="form-control mb-4 col-4">
-
-            <button type="submit" class="btn btn-info col-2">Save</button>
-        </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6 col-sm-6 col-xs-12 form-box">
+            <h1 class="text-center">Registration Form</h1> <hr>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="firstname">First Name:</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="text" class="form-control" id="firstname" placeholder="Enter First Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="lastname">Last Name:</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="text" class="form-control" id="lastname" placeholder="Enter Last Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="email">Email:</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="email" class="form-control" id="email" placeholder="Enter Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="ContactNo">Contact No.</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="input-group control-group after-add-more">
+                            <input type="text" name="addmore[]" id="ContactNo" class="form-control" placeholder="Enter Mobile No.">
+                            <div class="input-group-btn">
+                                <button class="btn btn-success add-more" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copy hide">
+                    <div class="control-group input-group" style="margin-top:10px">
+                        <input type="text" name="addmore[]" class="form-control" placeholder="Enter Other Mobile No.">
+                        <div class="input-group-btn">
+                            <button class="btn btn-danger remove" type="button"><i class="glyphicon glyphicon-remove"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
+                        <button type="submit" class="btn btn-success btn-block submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".add-more").click(function(){
+            var html = $(".copy").html();
+            $(".after-add-more").after(html);
+        });
+        $("body").on("click",".remove",function(){
+            $(this).parents(".control-group").remove();
+        });
+    });
+</script>
+
+
+<div class="panel-heading clearfix">
+    <form class="input-group col-md-offset-8">
+        <div class="input-group-btn">
+            <select class="btn btn-default dropdown-toggle">
+                <option value="1">Type 1</option>
+                <option value="2">Type 2   </option>
+            </select>
+        </div>
+        <input type="text" name="search[input]" placeholder="Search..." class="form-control"/>
+        <div class="input-group-btn">
+            <button type="submit" class="btn">Search <i class="glyphicon glyphicon-search"></i></button>
+        </div>
+    </form>
 </div>
 </body>
 </html>
+

@@ -3,6 +3,7 @@ package com.library.bookforyou.controllers;
 import com.library.bookforyou.models.Author;
 import com.library.bookforyou.models.Book;
 import com.library.bookforyou.services.BookService;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +20,6 @@ public class MainController {
     @Autowired
     private BookService bookService;
 
-
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -30,10 +30,10 @@ public class MainController {
         return goHome(model);
     }
 
-    @PostMapping("/login")
-    public String success(Model model) {
-        return goHome(model);
-    }
+//    @PostMapping("/login")
+//    public String success(Model model) {
+//        return goHome(model);
+//    }
 
     @GetMapping("/home")
     public String goHome(Model model) {

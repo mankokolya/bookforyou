@@ -1,114 +1,143 @@
-<!--<!doctype html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="utf-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-<!--    <title>Add or Remove Input Fields Dynamically using jQuery - MyNotePaper</title>-->
-
-<!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">-->
-<!--    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="container"style="max-width: 700px;">-->
-
-<!--    <div class="text-center" style="margin: 20px 0px 20px 0px;">-->
-<!--        <a href="https://shouts.dev/" target="_blank"><img src="https://i.imgur.com/hHZjfUq.png"></a><br>-->
-<!--        <span class="text-secondary">Add or Remove Input Fields Dynamically using jQuery</span>-->
-<!--    </div>-->
-
-<!--    <form method="post" action="">-->
-<!--        <div class="row">-->
-<!--            <div class="col-lg-12">-->
-<!--                <div id="inputFormRow">-->
-<!--                    <div class="input-group mb-3">-->
-<!--                        <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">-->
-<!--                        <div class="input-group-append">-->
-<!--                            <button id="removeRow" type="button" class="btn btn-danger">Remove</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div id="newRow"></div>-->
-<!--                <button id="addRow" type="button" class="btn btn-info">Add author</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--</div>-->
-
-<!--<script type="text/javascript">-->
-<!--    // add row-->
-<!--    $("#addRow").click(function () {-->
-<!--        var html = '';-->
-<!--        html += '<div id="inputFormRow">';-->
-<!--        html += '<div class="input-group mb-3">';-->
-<!--        html += '<input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';-->
-<!--        html += '<div class="input-group-append">';-->
-<!--        html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';-->
-<!--        html += '</div>';-->
-<!--        html += '</div>';-->
-
-<!--        $('#newRow').append(html);-->
-<!--    });-->
-
-<!--    // remove row-->
-<!--    $(document).on('click', '#removeRow', function () {-->
-<!--        $(this).closest('#inputFormRow').remove();-->
-<!--    });-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div th:replace="fragments :: dependencies">Dependencies</div>
 </head>
 <body>
+<div th:replace="fragments :: menu">Menu</div>
+<br>
+<br>
+<br>
 <div class="container">
     <div class="row">
         <div class="col-md-offset-3 col-md-6 col-sm-6 col-xs-12 form-box">
-            <h1 class="text-center">Registration Form</h1> <hr>
-            <form class="form-horizontal" role="form">
+            <h1 class="text-center">New Book Form</h1>
+            <hr>
+            <form class="form-horizontal" role="form" th:action="@{/books/new}" method="post" th:object="${bookDTO}">
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="firstname">First Name:</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="title">[[#{table.bookTitle}]]</label>
                     <div class="col-md-8 col-sm-8 col-xs-8">
-                        <input type="text" class="form-control" id="firstname" placeholder="Enter First Name">
+                        <input type="text" class="form-control" th:field="${bookDTO.title}" id="title"
+                               th:placeholder="#{book.title.placeholder}">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="lastname">Last Name:</label>
-                    <div class="col-md-8 col-sm-8 col-xs-8">
-                        <input type="text" class="form-control" id="lastname" placeholder="Enter Last Name">
+
+                <!--Authors block-->
+                <div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                               for="authors">[[#{table.author}]]</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="input-group control-group after-add-more-author">
+
+                                <select class="form-control" name="addmore[]" id="authors" th:field="${bookDTO.authors}">
+                                    <option value=""></option>
+                                    <option th:each="author : ${authors}" th:value="${author.name}"
+                                            th:text="${author.name}"
+                                            ></option>
+                                </select>
+
+                                <div class="input-group-btn">
+                                    <button class="btn btn-success add-more-author" type="button"><i
+                                            class="glyphicon glyphicon-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="email">Email:</label>
-                    <div class="col-md-8 col-sm-8 col-xs-8">
-                        <input type="email" class="form-control" id="email" placeholder="Enter Email">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="ContactNo">Contact No.</label>
-                    <div class="col-md-8 col-sm-8 col-xs-8">
-                        <div class="input-group control-group after-add-more">
-                            <input type="text" name="addmore[]" id="ContactNo" class="form-control" placeholder="Enter Mobile No.">
+
+                    <div class="copyAuthor hide">
+                        <div class="control-group input-group" style="margin-top:10px">
+                            <select class="form-control" name="addmore[]" id="moreAuthors" th:field="${bookDTO.authors}">
+                                <option selected value=""></option>
+                                <option th:each="author : ${authors}" th:value="${author.name}"
+                                th:text="${author.name}"></option>
+                            </select>
                             <div class="input-group-btn">
-                                <button class="btn btn-success add-more" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+                                <button class="btn btn-danger remove" type="button"><i
+                                        class="glyphicon glyphicon-remove"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="copy hide">
-                    <div class="control-group input-group" style="margin-top:10px">
-                        <input type="text" name="addmore[]" class="form-control" placeholder="Enter Other Mobile No.">
-                        <div class="input-group-btn">
-                            <button class="btn btn-danger remove" type="button"><i class="glyphicon glyphicon-remove"></i></button>
+
+                <!--Category block-->
+                <div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                               for="category">[[#{table.category}]]</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="input-group control-group after-add-more-category">
+
+                                <select class="form-control" name="addCategory[]" id="category"
+                                        th:field="${bookDTO.categories}">
+                                    <option selected value="" th:placeholder="#{book.category.placeholder}"></option>
+                                    <option th:each="category : ${categories}" th:value="${category.name}"
+                                            th:text="${category.name}"></option>
+                                </select>
+
+                                <div class="input-group-btn">
+                                    <button class="btn btn-success add-more-category" type="button"><i
+                                            class="glyphicon glyphicon-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="copyCategory hide">
+                        <div class="control-group-category input-group" style="margin-top:10px">
+                            <select class="form-control" name="addCategory[]" id="moreCategory"
+                                    th:field="${bookDTO.categories}">
+                                <option selected value="" th:placeholder="#{book.category.placeholder}"></option>
+                                <option th:each="category : ${categories}" th:value="${category.name}"
+                                        th:text="${category.name}"></option>
+                            </select>
+                            <div class="input-group-btn">
+                                <button class="btn btn-danger remove" type="button"><i
+                                        class="glyphicon glyphicon-remove"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                           for="publisher">[[#{table.publisher}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="text" class="form-control" id="publisher"
+                               th:placeholder="#{book.publisher.placeholder}"
+                               th:field="${bookDTO.publisher}">
+                    </div>
+                </div>
+                <!--Todo implement time localization-->
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                           for="date-input">[[#{table.year}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input class="form-control" type="date" id="date-input"
+                               th:field="${bookDTO.publishedDate}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="amount">[[#{table.amount}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="number" class="form-control" id="amount"
+                               th:field="${bookDTO.quantity}"
+                               th:placeholder="#{book.amount.placeholder}">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                           for="amount">[[#{table.description}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <textarea class="form-control" aria-label="With textarea"
+                                  th:field="${bookDTO.description}"></textarea>
+                    </div>
+                </div>
+
                 <hr>
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
@@ -119,25 +148,43 @@
         </div>
     </div>
 </div>
+
+
 <script type="text/javascript">
-    $(document).ready(function() {
-        $(".add-more").click(function(){
-            var html = $(".copy").html();
-            $(".after-add-more").after(html);
+    $(document).ready(function () {
+        $(".add-more-author").click(function () {
+            var html = $(".copyAuthor").html();
+            $(".after-add-more-author").after(html);
         });
-        $("body").on("click",".remove",function(){
+        $("body").on("click", ".remove", function () {
             $(this).parents(".control-group").remove();
+        });
+
+        $(".add-more-category").click(function () {
+            var html = $(".copyCategory").html();
+            $(".after-add-more-category").after(html);
+        });
+
+        $("body").on("click", ".remove", function () {
+            $(this).parents(".control-group-category").remove();
         });
     });
 </script>
 
+<!--<script>-->
+<!--    $(function () {-->
+<!--        $('#date-input').datetimepicker(-->
+<!--            {format: 'HH:mm', locale: 'ru'}-->
+<!--        );-->
+<!--    });-->
+<!--</script>-->
 
 <div class="panel-heading clearfix">
     <form class="input-group col-md-offset-8">
         <div class="input-group-btn">
             <select class="btn btn-default dropdown-toggle">
                 <option value="1">Type 1</option>
-                <option value="2">Type 2   </option>
+                <option value="2">Type 2</option>
             </select>
         </div>
         <input type="text" name="search[input]" placeholder="Search..." class="form-control"/>

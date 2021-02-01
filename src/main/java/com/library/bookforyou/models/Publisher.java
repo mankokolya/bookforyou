@@ -20,4 +20,12 @@ public class Publisher {
 
     @OneToMany(mappedBy = "publisher", fetch=FetchType.EAGER)
     private Set<Book> books;
+
+    public Publisher(String publisher) {
+        this.name = publisher;
+    }
+
+    public Publisher() {
+
+    }
 }

@@ -18,4 +18,8 @@ public class BookCategory {
     @Column(unique=true)
     @ToString.Include
     private String name;
+
+    public BookCategory(String name) {
+        this.name = name;
+    }
 }

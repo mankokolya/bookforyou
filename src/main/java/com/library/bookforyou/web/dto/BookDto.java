@@ -25,7 +25,7 @@ public class BookDto {
 
     private String title;
     private String[] authors;
-    private Publisher publisher;
+    private String publisher;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishedDate;

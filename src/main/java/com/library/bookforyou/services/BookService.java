@@ -1,27 +1,43 @@
 package com.library.bookforyou.services;
 
+import com.library.bookforyou.controllers.BookController;
 import com.library.bookforyou.models.Author;
 import com.library.bookforyou.models.Book;
 import com.library.bookforyou.models.BookCategory;
+import com.library.bookforyou.models.Publisher;
+import com.library.bookforyou.repositories.AuthorRepository;
 import com.library.bookforyou.repositories.BookRepository;
+import com.library.bookforyou.repositories.CategoryRepository;
+import com.library.bookforyou.repositories.PublisherRepository;
 import com.library.bookforyou.web.dto.BookDto;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @Service
 public class BookService {
+    private Logger logger = Logger.getLogger(BookController.class);
+
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
+    @Autowired
+    private AuthorRepository authorRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private PublisherRepository publisherRepository;
 
     public Page<Book> listAll(int pageNumber, String sortField, String sortDir) {
         int pageSize = 2;
@@ -39,12 +55,24 @@ public class BookService {
     }
 
     public void save(BookDto bookDto) {
-        bookRepository.save(new Book(bookDto.getTitle(),
-                Arrays.stream(bookDto.getAuthors()).map(Author::new).collect(Collectors.toSet()),
+        //todo refactor
+        Set<Author> authors = Arrays.stream(bookDto.getAuthors())
+                .map(author -> authorRepository.findByName(author))
+                .collect(Collectors.toSet());
+
+        Set<BookCategory> categories = Arrays.stream(bookDto.getCategories())
+                .map(category -> (categoryRepository.findByName(category)))
+                .collect(Collectors.toSet());
+
+        Publisher publisher = publisherRepository.findByName(bookDto.getPublisher());
+
+        bookRepository.save(new Book(
+                bookDto.getTitle(),
+                authors,
                 bookDto.getQuantity(),
-                bookDto.getPublisher(),
+                publisher,
                 bookDto.getPublishedDate(),
-                Arrays.stream(bookDto.getCategories()).map(BookCategory::new).collect(Collectors.toSet()),
+                categories,
                 bookDto.getDescription()));
     }
 

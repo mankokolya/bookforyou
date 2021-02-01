@@ -30,11 +30,12 @@
                         <div class="col-md-8 col-sm-8 col-xs-8">
                             <div class="input-group control-group after-add-more-author">
 
-                                <select class="form-control" name="addmore[]" id="authors" th:field="${bookDTO.authors}">
+                                <select class="form-control" name="addmore[]" id="authors"
+                                        th:field="${bookDTO.authors}">
                                     <option value=""></option>
                                     <option th:each="author : ${authors}" th:value="${author.name}"
                                             th:text="${author.name}"
-                                            ></option>
+                                    ></option>
                                 </select>
 
                                 <div class="input-group-btn">
@@ -47,10 +48,11 @@
 
                     <div class="copyAuthor hide">
                         <div class="control-group input-group" style="margin-top:10px">
-                            <select class="form-control" name="addmore[]" id="moreAuthors" th:field="${bookDTO.authors}">
+                            <select class="form-control" name="addmore[]" id="moreAuthors"
+                                    th:field="${bookDTO.authors}">
                                 <option selected value=""></option>
                                 <option th:each="author : ${authors}" th:value="${author.name}"
-                                th:text="${author.name}"></option>
+                                        th:text="${author.name}"></option>
                             </select>
                             <div class="input-group-btn">
                                 <button class="btn btn-danger remove" type="button"><i
@@ -100,15 +102,34 @@
                 </div>
 
 
+<!--                <div class="form-group">-->
+<!--                    <label class="control-label col-md-3 col-sm-3 col-xs-3"-->
+<!--                           for="publisher">[[#{table.publisher}]]</label>-->
+<!--                    <div class="col-md-8 col-sm-8 col-xs-8">-->
+<!--                        <input type="text" class="form-control" id="publisher"-->
+<!--                               th:placeholder="#{book.publisher.placeholder}"-->
+<!--                               th:field="${bookDTO.publisher}">-->
+<!--                    </div>-->
+<!--                </div>-->
+
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                           for="publisher">[[#{table.publisher}]]</label>
+                           for="category">[[#{table.publisher}]]</label>
                     <div class="col-md-8 col-sm-8 col-xs-8">
-                        <input type="text" class="form-control" id="publisher"
-                               th:placeholder="#{book.publisher.placeholder}"
-                               th:field="${bookDTO.publisher}">
+                        <div class="input-group control-group after-add-more-category">
+
+                            <select class="form-control" name="addCategory[]" id="category"
+                                    th:field="${bookDTO.publisher}">
+                                <option selected value="" th:placeholder="#{book.publisher.placeholder}"></option>
+                                <option th:each="publisher : ${publishers}"
+                                        th:value="${publisher.name}"
+                                        th:text="${publisher.name}"></option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
+
                 <!--Todo implement time localization-->
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-3"

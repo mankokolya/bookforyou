@@ -30,11 +30,6 @@ public class MainController {
         return goHome(model);
     }
 
-//    @PostMapping("/login")
-//    public String success(Model model) {
-//        return goHome(model);
-//    }
-
     @GetMapping("/home")
     public String goHome(Model model) {
         return listByPage(model, 1, "title", "asc");

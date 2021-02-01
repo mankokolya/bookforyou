@@ -4,6 +4,7 @@ import com.library.bookforyou.models.Book;
 import com.library.bookforyou.services.AuthorService;
 import com.library.bookforyou.services.BookService;
 import com.library.bookforyou.services.CategoryService;
+import com.library.bookforyou.services.PublisherService;
 import com.library.bookforyou.web.dto.BookDto;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,15 @@ private Logger logger = Logger.getLogger(BookController.class);
 
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    PublisherService publisherService;
 
     @GetMapping("/new")
     public String addBook(Model model) {
         model.addAttribute("bookDTO", new BookDto());
         model.addAttribute("authors", authorService.findAll());
         model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("publishers", publisherService.findAll());
         return "books/newBook";
     }
 

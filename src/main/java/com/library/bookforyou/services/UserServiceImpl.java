@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+
     @Autowired
     private UserRepository userRepository;
 
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(userDTO userDTO) {
+        //todo builder transaction
         User user = new User(userDTO.getFirstName(), userDTO.getLastName(),
                 userDTO.getEmail(), passwordEncoder.encode(userDTO.getPassword()));
         user.addRole(roleRepository.findByName(Roles.USER.name()));

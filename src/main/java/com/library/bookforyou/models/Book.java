@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String title;
@@ -65,19 +65,5 @@ public class Book {
         this.publishedDate = publishedDate;
         this.categories = categories;
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", authors=" + authors +
-                ", quantity=" + quantity +
-                ", publisher=" + publisher +
-                ", publishedDate=" + publishedDate +
-                ", categories=" + categories +
-                ", description='" + description + '\'' +
-                '}';
     }
 }

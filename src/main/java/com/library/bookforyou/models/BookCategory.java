@@ -9,14 +9,12 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Table(name="category")
-@ToString(onlyExplicitlyIncluded = true)
 public class BookCategory {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private int id;
 
     @Column(unique=true)
-    @ToString.Include
     private String name;
 
     public BookCategory(String name) {

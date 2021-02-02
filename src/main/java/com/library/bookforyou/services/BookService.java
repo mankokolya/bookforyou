@@ -90,12 +90,14 @@ public class BookService {
             Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
                     sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
             );
-            return bookRepository.findAllByParam("%" + param + "%", pageable);
+            return bookRepository.findByTitleLikeIgnoreCaseOrAuthorsNameLikeIgnoreCase(
+                    "%" + param + "%", "%" + param + "%", pageable);
         }
 
         Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
                 sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
         );
-        return bookRepository.findAllByParam("%" + param + "%", pageable);
+        return bookRepository.findByTitleLikeIgnoreCaseOrAuthorsNameLikeIgnoreCase(
+                "%" + param + "%", "%" + param + "%", pageable);
     }
 }

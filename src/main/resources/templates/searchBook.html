@@ -25,7 +25,7 @@
 
                     <input type="text" name="searchParam" th:placeholder="#{book.search.param}"/>
 
-                    <button type="submit">Search</button>
+                    <button type="submit">[[#{table.search}]]</button>
                 </form>
             </div>
         </div>
@@ -58,7 +58,7 @@
             <th><a th:href="@{'/books/page/' + ${currentPage}
                     + '?sortField=publisher&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.publisher}]]</a></th>
             <th><a th:href="@{'/books/page/' + ${currentPage}
-                    + '?sortField=published_date&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.year}]]</a></th>
+                    + '?sortField=publishedDate&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.year}]]</a></th>
             <th><a th:href="@{'/books/page/' + ${currentPage}
                     + '?sortField=quantity&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.amount}]]</a></th>
             <th>[[#{table.description}]]</th>

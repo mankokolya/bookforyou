@@ -77,7 +77,7 @@ public class BookController {
 
         Page<Book> page = bookService.findAllByParam(currentPage, sortField, sortDir, searchParam);
 
-        List<Book> books = page.getContent();
+        List<Book> booksSearch = page.getContent();
 
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalItems", page.getTotalElements());
@@ -88,7 +88,7 @@ public class BookController {
         model.addAttribute("searchParam", searchParam);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
-        model.addAttribute("books", books);
+        model.addAttribute("books", booksSearch);
 
         return "searchBook";
     }

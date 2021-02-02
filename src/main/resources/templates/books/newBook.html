@@ -9,214 +9,293 @@
 <br>
 <br>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-6 col-lg-4">
-            <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"> [[#{book.addNewAuthor}]]
-                </button>
 
-                <div class="dropdown-menu">
-                    <form class="form-horizontal" role="form" th:action="@{/authors/addBook}" method="post">
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                                   for="title">[[#{table.bookAuthor}]]</label>
-                            <div class="col-md-8 col-sm-8 col-xs-8">
-                                <input type="text" class="form-control"
-                                       th:placeholder="#{book.authors.placeholder}">
+    <div class="row">
+        <div th:if="${param.success}">
+            <div class="alert alert-info text-center">[[#{operation.successful}]]</div>
+        </div>
+        <div class="col-sm-3 col-md-6 col-lg-4">
+            <!--            Add new Author-->
+            <div>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"> [[#{book.addNewAuthor}]]
+                    </button>
+
+                    <div class="dropdown-menu col-xs-12">
+                        <form role="form" th:action="@{/authors/addAuthor}" method="post">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <label>
+                                        <input type="text" class="form-control" name="newAuthor"
+                                               th:placeholder="#{book.newAuthor.placeholder}">
+                                    </label>
+                                </div>
+                                <br>
+                                <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
+                                    <button type="submit" class="btn btn-success btn-block submit">
+                                        [[#{book.addButton.placeholder}]]
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
-                                <button type="submit" class="btn btn-success btn-block submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <!--Add new category-->
+
+            <div>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="categoryDropdownMenu"
+                            data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"> [[#{book.addNewCategory}]]
+                    </button>
+
+                    <div class="dropdown-menu col-xs-12">
+                        <form role="form" th:action="@{/categories/addCategory}" method="post">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <label>
+                                        <input type="text" class="form-control"
+                                               th:placeholder="#{book.newCategory.placeholder}">
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
+                                    <button type="submit" class="btn btn-success btn-block submit">
+                                        [[#{book.addButton.placeholder}]]
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <br>
+
+            <!--Add new publisher-->
+
+            <div>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="publisherDropdownMenu"
+                            data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"> [[#{book.addNewPublisher}]]
+                    </button>
+
+                    <div class="dropdown-menu col-xs-12">
+                        <form role="form" th:action="@{/publishers/addPublisher}" method="post">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <label>
+                                        <input type="text" class="form-control"
+                                               th:placeholder="#{book.newPublisher.placeholder}">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
+                                    <button type="submit" class="btn btn-success btn-block submit">
+                                        [[#{book.addButton.placeholder}]]
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+
         <div class="col-sm-9 col-md-6 col-lg-8" style="background-color:#DEB887;">
-<!--            <div class="col-md-offset-3 col-md-6 col-sm-6 col-xs-12 form-box">-->
-                <h1 class="text-center">New Book Form</h1>
-                <hr>
-                <form class="form-horizontal" role="form" th:action="@{/books/new}" method="post" th:object="${bookDTO}">
+            <h1 class="text-center">[[#{book.newBook.title}]]</h1>
+            <hr>
+            <form class="form-horizontal" role="form" th:action="@{/books/new}" method="post" th:object="${bookDTO}">
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                           for="title">[[#{table.bookTitle}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="text" class="form-control" th:field="${bookDTO.title}" id="title"
+                               th:placeholder="#{book.title.placeholder}">
+                    </div>
+                </div>
+
+                <!--Authors block-->
+                <div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                               for="title">[[#{table.bookTitle}]]</label>
+                               for="authors">[[#{table.author}]]</label>
                         <div class="col-md-8 col-sm-8 col-xs-8">
-                            <input type="text" class="form-control" th:field="${bookDTO.title}" id="title"
-                                   th:placeholder="#{book.title.placeholder}">
-                        </div>
-                    </div>
+                            <div class="input-group control-group after-add-more-author">
 
-                    <!--Authors block-->
-                    <div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                                   for="authors">[[#{table.author}]]</label>
-                            <div class="col-md-8 col-sm-8 col-xs-8">
-                                <div class="input-group control-group after-add-more-author">
-
-                                    <select class="form-control" name="addmore[]" id="authors"
-                                            th:field="${bookDTO.authors}">
-                                        <option value=""></option>
-                                        <option th:each="author : ${authors}" th:value="${author.name}"
-                                                th:text="${author.name}"
-                                        ></option>
-                                    </select>
-
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-success add-more-author" type="button"><i
-                                                class="glyphicon glyphicon-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="copyAuthor hide">
-                            <div class="control-group input-group" style="margin-top:10px">
-                                <select class="form-control" name="addmore[]" id="moreAuthors"
+                                <select class="form-control" name="addmore[]" id="authors"
                                         th:field="${bookDTO.authors}">
-                                    <option selected value=""></option>
+                                    <option value=""></option>
                                     <option th:each="author : ${authors}" th:value="${author.name}"
-                                            th:text="${author.name}"></option>
+                                            th:text="${author.name}"
+                                    ></option>
                                 </select>
+
                                 <div class="input-group-btn">
-                                    <button class="btn btn-danger remove" type="button"><i
-                                            class="glyphicon glyphicon-remove"></i></button>
+                                    <button class="btn btn-success add-more-author" type="button"><i
+                                            class="glyphicon glyphicon-plus"></i></button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!--Category block-->
-                    <div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                                   for="category">[[#{table.category}]]</label>
-                            <div class="col-md-8 col-sm-8 col-xs-8">
-                                <div class="input-group control-group after-add-more-category">
-
-                                    <select class="form-control" name="addCategory[]" id="category"
-                                            th:field="${bookDTO.categories}">
-                                        <option selected value=""
-                                                th:placeholder="#{book.category.placeholder}"></option>
-                                        <option th:each="category : ${categories}" th:value="${category.name}"
-                                                th:text="${category.name}"></option>
-                                    </select>
-
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-success add-more-category" type="button"><i
-                                                class="glyphicon glyphicon-plus"></i></button>
-                                    </div>
-                                </div>
+                    <div class="copyAuthor hide">
+                        <div class="control-group input-group" style="margin-top:10px">
+                            <select class="form-control" name="addmore[]" id="moreAuthors"
+                                    th:field="${bookDTO.authors}">
+                                <option selected value=""></option>
+                                <option th:each="author : ${authors}" th:value="${author.name}"
+                                        th:text="${author.name}"></option>
+                            </select>
+                            <div class="input-group-btn">
+                                <button class="btn btn-danger remove" type="button"><i
+                                        class="glyphicon glyphicon-remove"></i></button>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="copyCategory hide">
-                            <div class="control-group-category input-group" style="margin-top:10px">
-                                <select class="form-control" name="addCategory[]" id="moreCategory"
+                <!--Category block-->
+                <div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                               for="category">[[#{table.category}]]</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="input-group control-group after-add-more-category">
+
+                                <select class="form-control" name="addCategory[]" id="category"
                                         th:field="${bookDTO.categories}">
-                                    <option selected value="" th:placeholder="#{book.category.placeholder}"></option>
+                                    <option selected value=""
+                                            th:placeholder="#{book.category.placeholder}"></option>
                                     <option th:each="category : ${categories}" th:value="${category.name}"
                                             th:text="${category.name}"></option>
                                 </select>
+
                                 <div class="input-group-btn">
-                                    <button class="btn btn-danger remove" type="button"><i
-                                            class="glyphicon glyphicon-remove"></i></button>
+                                    <button class="btn btn-success add-more-category" type="button"><i
+                                            class="glyphicon glyphicon-plus"></i></button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                               for="category">[[#{table.publisher}]]</label>
-                        <div class="col-md-8 col-sm-8 col-xs-8">
-
-
-                            <select class="form-control" name="addCategory[]" id="publisher"
-                                    th:field="${bookDTO.publisher}">
-                                <option selected value="" th:placeholder="#{book.publisher.placeholder}"></option>
-                                <option th:each="publisher : ${publishers}"
-                                        th:value="${publisher.name}"
-                                        th:text="${publisher.name}"></option>
+                    <div class="copyCategory hide">
+                        <div class="control-group-category input-group" style="margin-top:10px">
+                            <select class="form-control" name="addCategory[]" id="moreCategory"
+                                    th:field="${bookDTO.categories}">
+                                <option selected value="" th:placeholder="#{book.category.placeholder}"></option>
+                                <option th:each="category : ${categories}" th:value="${category.name}"
+                                        th:text="${category.name}"></option>
                             </select>
+                            <div class="input-group-btn">
+                                <button class="btn btn-danger remove" type="button"><i
+                                        class="glyphicon glyphicon-remove"></i></button>
+                            </div>
                         </div>
                     </div>
+                </div>
 
 
-                    <!--Todo implement time localization-->
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                               for="date-input">[[#{table.year}]]</label>
-                        <div class="col-md-8 col-sm-8 col-xs-8">
-                            <input class="form-control" type="date" id="date-input"
-                                   th:field="${bookDTO.publishedDate}">
-                        </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                           for="category">[[#{table.publisher}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+
+
+                        <select class="form-control" name="addCategory[]" id="publisher"
+                                th:field="${bookDTO.publisher}">
+                            <option selected value="" th:placeholder="#{book.publisher.placeholder}"></option>
+                            <option th:each="publisher : ${publishers}"
+                                    th:value="${publisher.name}"
+                                    th:text="${publisher.name}"></option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3" for="amount">[[#{table.amount}]]</label>
-                        <div class="col-md-8 col-sm-8 col-xs-8">
-                            <input type="number" class="form-control" id="amount"
-                                   th:field="${bookDTO.quantity}"
-                                   th:placeholder="#{book.amount.placeholder}">
-                        </div>
+
+                <!--Todo implement time localization-->
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                           for="date-input">[[#{table.year}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input class="form-control" type="date" id="date-input"
+                               th:field="${bookDTO.publishedDate}">
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3" for="amount">[[#{table.amount}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="number" class="form-control" id="amount"
+                               th:field="${bookDTO.quantity}"
+                               th:placeholder="#{book.amount.placeholder}">
+                    </div>
+                </div>
 
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3"
-                               for="amount">[[#{table.description}]]</label>
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-3"
+                           for="amount">[[#{table.description}]]</label>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
                         <textarea class="form-control" aria-label="With textarea"
                                   th:field="${bookDTO.description}"></textarea>
-                        </div>
                     </div>
+                </div>
 
-                    <hr>
-                    <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
-                            <button type="submit" class="btn btn-success btn-block submit">Submit</button>
-                        </div>
+                <hr>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
+                        <button type="submit" class="btn btn-success btn-block submit">[[#{book.addButton.placeholder}]]
+                        </button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+</div>
 
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".add-more-author").click(function () {
-                var html = $(".copyAuthor").html();
-                $(".after-add-more-author").after(html);
-            });
-            $("body").on("click", ".remove", function () {
-                $(this).parents(".control-group").remove();
-            });
-
-            $(".add-more-category").click(function () {
-                var html = $(".copyCategory").html();
-                $(".after-add-more-category").after(html);
-            });
-
-            $("body").on("click", ".remove", function () {
-                $(this).parents(".control-group-category").remove();
-            });
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".add-more-author").click(function () {
+            var html = $(".copyAuthor").html();
+            $(".after-add-more-author").after(html);
         });
-    </script>
+        $("body").on("click", ".remove", function () {
+            $(this).parents(".control-group").remove();
+        });
 
-    <!--<script>-->
-    <!--    $(function () {-->
-    <!--        $('#date-input').datetimepicker(-->
-    <!--            {format: 'HH:mm', locale: 'ru'}-->
-    <!--        );-->
-    <!--    });-->
-    <!--</script>-->
+        $(".add-more-category").click(function () {
+            var html = $(".copyCategory").html();
+            $(".after-add-more-category").after(html);
+        });
+
+        $("body").on("click", ".remove", function () {
+            $(this).parents(".control-group-category").remove();
+        });
+    });
+</script>
+
+<!--<script>-->
+<!--    $(function () {-->
+<!--        $('#date-input').datetimepicker(-->
+<!--            {format: 'HH:mm', locale: 'ru'}-->
+<!--        );-->
+<!--    });-->
+<!--</script>-->
 
 <!--    <div class="panel-heading clearfix">-->
 <!--        <form class="input-group col-md-offset-8">-->

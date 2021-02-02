@@ -60,9 +60,9 @@ public class BookController {
         return bookService.findBook(id).get();
     }
 
+
     @GetMapping("/find")
-    public String findBySearchParam(@RequestParam("param") String searchParam, Model model) {
-//        bookService.findAllByParam(searchParam);
+    public String findBySearchParam(@RequestParam("searchParam") String searchParam, Model model) {
         logger.info("param" + searchParam);
 
         return listByPage(model, searchParam, 1, "title", "asc");
@@ -70,7 +70,7 @@ public class BookController {
 
     @GetMapping("/page/{pageNumber}")
     public String listByPage(Model model,
-                             @RequestParam("param") String searchParam,
+                             @RequestParam("searchParam") String searchParam,
                              @PathVariable("pageNumber") int currentPage,
                              @Param("sortField") String sortField,
                              @Param("sortDir") String sortDir) {
@@ -85,10 +85,11 @@ public class BookController {
 
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
+        model.addAttribute("searchParam", searchParam);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
         model.addAttribute("books", books);
 
-        return "index";
+        return "searchBook";
     }
 }

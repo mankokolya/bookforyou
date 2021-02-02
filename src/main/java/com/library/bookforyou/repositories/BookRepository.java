@@ -21,7 +21,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "where lower(b.title) like lower(?1) " +
             "or lower(a.name) like lower(?1)",
 //
-//            countQuery = "select count(*) from book join book_author ba on book.id = ba.book_id where lower(title) like lower(?1)",
 //
             nativeQuery = true)
 

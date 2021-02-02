@@ -23,9 +23,7 @@
             <div class="col">
                 <form method="get" th:action="@{/books/find}" class="text-right">
 
-                    <label>
-                        <input type="text" name="searchParam" th:placeholder="#{book.search.param}"/>
-                    </label>
+                    <input type="text" name="searchParam" th:placeholder="#{book.search.param}"/>
 
                     <button type="submit">Search</button>
                 </form>
@@ -46,23 +44,23 @@
         <tr>
             <th>№</th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=title&sortDir=' + ${reverseSortDir}}">[[#{table.bookTitle}]]</a>
+                <a th:href="@{'/books/page/' + ${currentPage}
+                    + '?sortField=title&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.bookTitle}]]</a>
             </th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=authors&sortDir=' + ${reverseSortDir}}">[[#{table.author}]]</a>
+                <a th:href="@{'/books/page/' + ${currentPage}
+                    + '?sortField=authors&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.author}]]</a>
             </th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=categories&sortDir=' + ${reverseSortDir}}">[[#{table.category}]]</a>
+                <a th:href="@{'/books/page/' + ${currentPage}
+                    + '?sortField=categories&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.category}]]</a>
             </th>
-            <th><a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=publisher&sortDir=' + ${reverseSortDir}}">[[#{table.publisher}]]</a></th>
-            <th><a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=publishedDate&sortDir=' + ${reverseSortDir}}">[[#{table.year}]]</a></th>
-            <th><a th:href="@{'/page/' + ${currentPage}
-                    + '?sortField=quantity&sortDir=' + ${reverseSortDir}}">[[#{table.amount}]]</a></th>
+            <th><a th:href="@{'/books/page/' + ${currentPage}
+                    + '?sortField=publisher&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.publisher}]]</a></th>
+            <th><a th:href="@{'/books/page/' + ${currentPage}
+                    + '?sortField=published_date&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.year}]]</a></th>
+            <th><a th:href="@{'/books/page/' + ${currentPage}
+                    + '?sortField=quantity&sortDir=' + ${reverseSortDir} + '&searchParam=' + ${searchParam}}">[[#{table.amount}]]</a></th>
             <th>[[#{table.description}]]</th>
             <th sec:authorize="isAuthenticated()"></th>
         </tr>
@@ -130,43 +128,40 @@
 </div>
 
 <!--Paging-->
-<div class="text-center"><!--<div>&nbsp;</div>-->
+<div class="text-center">
     [[#{table.totalItems}]] [[${totalItems}]] - [[#{table.page}]] [[${currentPage}]] [[#{table.of}]]
     [[${totalPages}]]
     &nbsp; - &nbsp;
     <!--First page-->
-    <a th:if="${currentPage > 1}" th:href="@{'/page/1' +'?sortField='
-            + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.firstPage}]]</a>
-    <!--        <span th:unless="${currentPage > 1}">First</span>-->
+    <a th:if="${currentPage > 1}" th:href="@{'/books/page/1' +'?sortField='
+            + ${sortField} + '&sortDir=' + ${sortDir} + '&searchParam=' + ${searchParam}}">[[#{table.firstPage}]]</a>
     &nbsp;
 
     <!--Previous page-->
-    <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}
-            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.previousPage}]]</a>
+    <a th:if="${currentPage > 1}" th:href="@{'/books/page/' + ${currentPage - 1}
+            +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchParam=' + ${searchParam}}">[[#{table.previousPage}]]</a>
     &nbsp;
 
     <!--Paging-->
     <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                    <a th:if="${i != currentPage}" th:href="@{'/page/' + ${i}
-                        +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                    <a th:if="${i != currentPage}"
+                       th:href="@{'/books/page/' + ${i} +'?sortField=' + ${sortField}
+                       + '&sortDir=' + ${sortDir} + '&searchParam=' + ${searchParam}}">[[${i}]]</a>
                     <span th:unless="${i != currentPage}">[[${i}]]</span>
                     &nbsp;
                 </span>
 
     <!--Next page-->
-    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}
-                    +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.nextPage}]]</a>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/books/page/' + ${currentPage + 1}
+                    +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchParam=' + ${searchParam}}">[[#{table.nextPage}]]</a>
     <span th:unless="${currentPage < totalPages}">Next</span>
     &nbsp;
 
     <!--Last page-->
-    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}
-            + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[#{table.lastPage}]]</a>
-    <!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+    <a th:if="${currentPage < totalPages}" th:href="@{'/books/page/' + ${totalPages}
+            + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchParam=' + ${searchParam}}">[[#{table.lastPage}]]</a>
     &nbsp;
 </div>
 
-
-<!--<script type="text/javascript" th:src="@{js/book.js}" src="../static/js/book.js"></script>-->
 </body>
 </html>

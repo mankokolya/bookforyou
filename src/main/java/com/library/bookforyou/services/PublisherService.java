@@ -13,6 +13,10 @@ public class PublisherService {
     private PublisherRepository publisherRepository;
 
     public List<Publisher> findAll() {
-       return publisherRepository.findAll();
+        return publisherRepository.findAll();
+    }
+
+    public void addNewPublisher(String addPublisher) {
+        publisherRepository.save(new Publisher(addPublisher));
     }
 }

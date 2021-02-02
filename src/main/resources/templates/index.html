@@ -5,8 +5,6 @@
 <head>
     <title>[[${pageTitle}]] Book For You</title>
     <div th:replace="fragments :: dependencies">Dependencies</div>
-
-
 </head>
 
 <body>
@@ -16,17 +14,18 @@
 <br>
 
 <div class="container">
-    <!-- Title-->
+    <!-- Title and search input-->
     <div class="row">
         <div class="col-md-12">
             <div class="col"></div>
             <div class="col-6 text-center"><h2 class="col">[[#{table.title}]]</h2></div>
+
             <div class="col">
-                <form method="post">
-                    <div class="text-right">
-                        <input type="text" name="subject"/><!--th:field="*{subject}"-->
-                        <input type="submit" value="Search">
-                    </div>
+                <form method="get" th:action="@{/books/find}" class="text-right">
+
+                    <input type="text" name="param" th:placeholder="#{book.search.param}"/>
+
+                    <button type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -34,8 +33,7 @@
     <br>
 </div>
 
-<!-- Add button and search input-->
-<!--table with books-->
+<!-- Add button, table with books-->
 <div class="container">
 
     <a sec:authorize="hasAnyAuthority('ADMIN', 'LIBRARIAN')" th:href="@{/books/new}"
@@ -89,12 +87,9 @@
             <td th:text="${book.description}">Description</td>
 
             <td sec:authorize="hasAnyAuthority('ADMIN', 'LIBRARIAN')">
-<!--                <a th:href="@{/books/delete/(id=${book.getId()})}" id="deleteButton"-->
-<!--                   sec:authorize="hasAuthority('ADMIN')"-->
-<!--                   class="btn btn-danger table-striped">[[#{table.delete}]]</a>-->
-
                 <button type="button" class="btn btn-danger table-striped" data-toggle="modal"
-                        th:attr="data-target='#recordDeleteModal'+ ${book.id}">[[#{table.delete}]]</button>
+                        th:attr="data-target='#recordDeleteModal'+ ${book.id}">[[#{table.delete}]]
+                </button>
 
                 <!-- Modal -->
                 <div class="modal fade" th:attr="id='recordDeleteModal'+${book.id}" tabindex="-1" role="dialog"
@@ -112,7 +107,9 @@
                                 [[#{book.delete.confirmation}]]
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{book.delete.no}]]</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                    [[#{book.delete.no}]]
+                                </button>
                                 <a href="newRecordForm.html" class="btn btn-primary"
                                    th:attr="href = @{/books/delete/(id=${book.getId()})}">[[#{book.delete.yes}]]</a>
                             </div>

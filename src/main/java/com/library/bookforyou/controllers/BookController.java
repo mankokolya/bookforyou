@@ -8,14 +8,19 @@ import com.library.bookforyou.services.PublisherService;
 import com.library.bookforyou.web.dto.BookDto;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
-private Logger logger = Logger.getLogger(BookController.class);
+    private Logger logger = Logger.getLogger(BookController.class);
+
     @Autowired
     BookService bookService;
 
@@ -53,5 +58,37 @@ private Logger logger = Logger.getLogger(BookController.class);
     @ResponseBody
     public Book findOne(long id) {
         return bookService.findBook(id).get();
+    }
+
+    @GetMapping("/find")
+    public String findBySearchParam(@RequestParam("param") String searchParam, Model model) {
+//        bookService.findAllByParam(searchParam);
+        logger.info("param" + searchParam);
+
+        return listByPage(model, searchParam, 1, "title", "asc");
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public String listByPage(Model model,
+                             @RequestParam("param") String searchParam,
+                             @PathVariable("pageNumber") int currentPage,
+                             @Param("sortField") String sortField,
+                             @Param("sortDir") String sortDir) {
+
+        Page<Book> page = bookService.findAllByParam(currentPage, sortField, sortDir, searchParam);
+
+        List<Book> books = page.getContent();
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("totalPages", page.getTotalPages());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("books", books);
+
+        return "index";
     }
 }

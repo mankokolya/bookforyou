@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
     private Logger logger = Logger.getLogger(BookController.class);
-
+    private final int PAGE_SIZE = 2;
 
     @Autowired
     private BookRepository bookRepository;
@@ -40,15 +40,14 @@ public class BookService {
     private PublisherRepository publisherRepository;
 
     public Page<Book> listAll(int pageNumber, String sortField, String sortDir) {
-        int pageSize = 2;
         if (sortField.equals("categories") || sortField.equals("authors")) {
-            Pageable pageable = PageRequest.of(pageNumber - 1, pageSize,
+            Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
                     sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
             );
             return bookRepository.findAll(pageable);
         }
 
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize,
+        Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
                 sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
         );
         return bookRepository.findAll(pageable);
@@ -82,5 +81,21 @@ public class BookService {
 
     public Optional<Book> findBook(Long id) {
         return bookRepository.findById(id);
+    }
+
+
+    public Page<Book> findAllByParam(int pageNumber, String sortField, String sortDir, String param) {
+
+        if (sortField.equals("categories") || sortField.equals("authors")) {
+            Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
+                    sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
+            );
+            return bookRepository.findAllByParam("%" + param + "%", pageable);
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
+                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
+        );
+        return bookRepository.findAllByParam("%" + param + "%", pageable);
     }
 }

@@ -46,10 +46,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/registration**",
                 "/login/**",
                 "/books/**",
+                "/order/**",
                 "/page/**",
                 "/users/**",
                 "/authors/**",
                 "/home/**").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

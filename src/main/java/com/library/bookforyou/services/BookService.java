@@ -65,6 +65,8 @@ public class BookService {
 
         Publisher publisher = publisherRepository.findByName(bookDto.getPublisher());
 
+
+        //transaction
         bookRepository.save(new Book(
                 bookDto.getTitle(),
                 authors,
@@ -101,4 +103,5 @@ public class BookService {
         return bookRepository.findByTitleLikeIgnoreCaseOrAuthorsNameLikeIgnoreCase(
                 "%" + param + "%", "%" + param + "%", pageable);
     }
+
 }

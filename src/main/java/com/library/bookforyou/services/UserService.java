@@ -51,6 +51,7 @@ public class UserService {
     }
 
     public Page<User> findAll(int pageNumber, String sortField, String sortDir) {
+        //Todo Sorting
 //        if (sortField.equals("categories") || sortField.equals("authors")) {
 //            Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
 //                    sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()

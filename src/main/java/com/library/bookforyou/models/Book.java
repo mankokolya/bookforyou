@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class Book {
     private String title;
 
     @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {CascadeType.ALL})
+            cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "book_author",
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
@@ -41,6 +42,7 @@ public class Book {
 
     @Column(name = "published_date", columnDefinition = "DATE")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Past
     private LocalDate publishedDate;
 
 

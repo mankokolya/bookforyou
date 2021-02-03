@@ -89,16 +89,20 @@
             <td th:text="${book.description}">Description</td>
 
             <td>
-                <a th:href="@{/books/edit}" class="btn btn-success table-striped">[[#{table.order}]]</a>
+                <a th:href="@{/order/take/(id=${book.getId()})}" class="btn btn-success table-striped">[[#{table.takeHome}]]</a>
+                <br>
+                <br>
+                <a th:href="@{/order/read}" class="btn btn-success table-striped">[[#{table.readInLibrary}]]</a>
                 <br>
 
                 <div sec:authorize="hasAnyAuthority('ADMIN')">
                     <br>
                     <!--                    Edit-->
-                    <a th:href="@{/books/edit}" class="btn btn-info table-striped">[[#{table.edit}]]</a>
+                    <a th:href="@{'/books/edit/' + ${book.id}}" class="btn btn-info table-striped">[[#{table.edit}]]</a>
                     <br>
                     <br>
                     <!--                    Delete-->
+
                     <button type="button" class="btn btn-danger table-striped" data-toggle="modal"
                             th:attr="data-target='#recordDeleteModal'+ ${book.id}">[[#{table.delete}]]
                     </button>

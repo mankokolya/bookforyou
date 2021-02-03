@@ -1,6 +1,8 @@
 package com.library.bookforyou.controllers;
 
+import com.library.bookforyou.models.Author;
 import com.library.bookforyou.models.Book;
+import com.library.bookforyou.models.BookCategory;
 import com.library.bookforyou.services.AuthorService;
 import com.library.bookforyou.services.BookService;
 import com.library.bookforyou.services.CategoryService;
@@ -12,8 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.Binding;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -43,8 +49,11 @@ public class BookController {
     }
 
     @PostMapping("/new")
-    public String saveBook(BookDto bookDto) {
+    public String saveBook(@Valid BookDto bookDto, BindingResult bindingResult) {
         logger.info(bookDto.toString());
+        if (bindingResult.hasErrors()) {
+            return "books/newBook";
+        }
         bookService.save(bookDto);
         return "redirect:/home";
     }

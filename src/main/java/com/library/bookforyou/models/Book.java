@@ -56,6 +56,13 @@ public class Book {
     @Type(type = "text")
     private String description;
 
+
+    @OneToMany(mappedBy = "book", fetch=FetchType.EAGER)
+    private Set<Order> orders;
+
+
+
+
     public Book(String title, Set<Author> authors, int quantity, Publisher publisher,
                 LocalDate publishedDate, Set<BookCategory> categories, String description) {
         this.title = title;

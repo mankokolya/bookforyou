@@ -50,6 +50,10 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id")
+    private Account account;
+
 
     public User(String firstName, String lastName, @Email @NotNull String email, @NotBlank String password) {
         this.firstName = firstName;
@@ -57,6 +61,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.roles = new HashSet<>();
+        this.account = new Account();
     }
 
     public void addRole(Role userRole) {

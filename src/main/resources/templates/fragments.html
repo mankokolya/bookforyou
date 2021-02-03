@@ -6,10 +6,6 @@
 <body>
 <div th:fragment="dependencies">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<!--    <link rel="stylesheet"-->
-<!--          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
-<!--          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"-->
-<!--          crossorigin="anonymous">-->
 
     <!-- Bootstrap scripts -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -44,7 +40,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/home">[[#{menu.home}]]</a></li>
-                    <li><a href="#">[[#{menu.users}]]</a></li>
+                    <li clas="active"><a href="/users">[[#{menu.users}]]</a></li>
                     <li><a href="#">[[#{menu.category}]]</a></li>
                 </ul>
 

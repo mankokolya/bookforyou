@@ -4,9 +4,7 @@ import com.library.bookforyou.services.UserService;
 import com.library.bookforyou.web.dto.userDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/registration")
@@ -23,15 +22,15 @@ public class RegistrationController {
 
     private final UserService userService;
 
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
+
     //trims empty input and replace it with null
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-    }
-
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
     }
 
     @PostMapping
@@ -41,12 +40,11 @@ public class RegistrationController {
             return "registration";
         }
 
-        if (userDTO.getPassword() != null && userDTO.getConfirmPassword() != null) {
-            if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
-                bindingResult.addError(new FieldError("user", "confirmPassword",
-                        "Password must match"));
-                return "registration";
-            }
+        if (!Objects.equals(userDTO.getPassword(), userDTO.getConfirmPassword())) {
+            bindingResult.addError(new FieldError("user", "confirmPassword",
+                    "Password must match"));
+            return "registration";
+
         }
 
         if (userService.userExists(userDTO.getEmail())) {

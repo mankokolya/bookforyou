@@ -84,6 +84,7 @@ public class BookService {
     }
 
 
+
     public Page<Book> findAllByParam(int pageNumber, String sortField, String sortDir, String param) {
 
         if (sortField.equals("categories") || sortField.equals("authors")) {

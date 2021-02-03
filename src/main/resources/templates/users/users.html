@@ -23,7 +23,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h4>[[#{users.table.title}]]</h4>
+            <h2 class="text-center">[[#{users.table.title}]]</h2>
+            <br>
+            <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/librarian/new}"
+               class="btn btn-primary table-striped">[[#{table.newLibrarian}]]</a>
 
             <div class="table-responsive">
                 <table id="mytable" class="table table-bordred table-striped">

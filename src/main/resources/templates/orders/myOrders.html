@@ -21,6 +21,9 @@
         <div class="col-md-12">
             <h2 class="text-center">[[#{users.orders.title}]]</h2>
             <br>
+            <div th:if="${param.pleaseLogin}">
+                <div class="alert alert-info">[[#{cancel.success}]]</div>
+            </div>
             <div class="table-responsive">
                 <table id="mytable" class="table table-bordred table-striped">
 
@@ -34,7 +37,7 @@
                     <th>[[#{order.returnedDate}]]</th>
                     <th>[[#{order.penalty}]]</th>
                     <th>[[#{order.status}]]</th>
-<!--                    <th >[[#{order.confirm}]]</th>-->
+                    <!--                    <th >[[#{order.confirm}]]</th>-->
                     <th>[[#{order.cancel}]]</th>
                     </thead>
                     <tbody>
@@ -48,16 +51,43 @@
                         <td th:text="${order.returnedDate}">Returned Date</td>
                         <td th:text="${order.penalty}">Penalty</td>
                         <td th:text="${order.status}">Status</td>
-<!--                        <td>-->
-<!--                            <p data-placement="top" data-toggle="tooltip" title="Edit">-->
-<!--                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"-->
-<!--                                        data-target="#edit"><span class="glyphicon glyphicon-pencil"></span></button>-->
-<!--                            </p> -->
-<!--                        </td>-->
+                        <!--                        <td>-->
+                        <!--                            <p data-placement="top" data-toggle="tooltip" title="Edit">-->
+                        <!--                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"-->
+                        <!--                                        data-target="#edit"><span class="glyphicon glyphicon-pencil"></span></button>-->
+                        <!--                            </p> -->
+                        <!--                        </td>-->
                         <td th:if="${order.status.name().equals('NEW')}">
                             <p data-placement="top" data-toggle="tooltip" title="Delete">
-                                <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                        data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button>
+                                <button type="button" class="btn btn-danger table-striped" data-toggle="modal"
+                                        th:attr="data-target='#recordDeleteModal'+ ${order.id}">[[#{order.cancel}]]
+                                </button>
+
+
+                                <!--  Delete Modal -->
+                            <div class="modal fade" th:attr="id='recordDeleteModal'+${order.id}" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+
+                                        <div class="modal-body">
+                                            <div class="alert alert-danger"th:text="#{order.delete.record} + ': ' + ${order.book.title}"> <span
+                                                    class="glyphicon glyphicon-warning-sign"></span >
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                [[#{book.delete.no}]]
+                                            </button>
+                                            <a  class="btn btn-primary"
+                                               th:href = "@{/order/delete/(id=${order.id}, bookId=${order.book.id},
+                                               bookQuantity=${order.book.quantity})}">[[#{book.delete.yes}]]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal end -->
                             </p>
                         </td>
 
@@ -173,7 +203,8 @@
 
 
     <!--  Take modal-dialog -->
-</div><div class="modal fade" id="take" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+</div>
+<div class="modal fade" id="take" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

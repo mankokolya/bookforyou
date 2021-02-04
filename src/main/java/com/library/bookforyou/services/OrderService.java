@@ -1,13 +1,8 @@
 package com.library.bookforyou.services;
 
 import com.library.bookforyou.models.*;
-import com.library.bookforyou.repositories.BookRepository;
 import com.library.bookforyou.repositories.OrderRepository;
-import com.library.bookforyou.repositories.UserRepository;
 import com.library.bookforyou.util.Constants;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
@@ -64,7 +58,6 @@ public class OrderService {
     }
 
 
-
     public Page<Order> findAllWithUsername(int currentPage, String sortField, String sortDir, String username) {
 //        if (sortField.equals("categories") || sortField.equals("authors")) {
 //            Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
@@ -80,5 +73,11 @@ public class OrderService {
                 sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
 
         return orderRepository.findAllByAccount(user.getAccount(), pageable);
+    }
+
+    @Transactional
+    public void cancelOrder(long id, long bookId, int bookQuantity) {
+        bookService.updateBookQuantity(bookQuantity + 1, bookId);
+        orderRepository.deleteById(id);
     }
 }

@@ -1,9 +1,7 @@
 package com.library.bookforyou.controllers;
 
-import com.library.bookforyou.models.Book;
 import com.library.bookforyou.models.Order;
 import com.library.bookforyou.services.OrderService;
-import com.library.bookforyou.util.PagingModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.List;
 
 
 @Controller
@@ -66,7 +63,18 @@ public class OrderController {
         model.addAttribute("pagedOrders", page.getContent());
         logger.info("Total elements " + page.getTotalElements());
 
-        return "orders/orders";
+        return "orders/myOrders";
+    }
+
+    @GetMapping("/delete")
+    public String deleteBook(@RequestParam(name = "id") long id,
+                             @RequestParam(name = "bookId") long bookID,
+                             @RequestParam(name = "bookQuantity") int booQuantity) {
+        logger.info(String.format("Deleting order with id %d", id));
+        orderService.cancelOrder(id, bookID, booQuantity);
+        logger.info(String.format("Deleted order with id %d successfully", id));
+
+        return "redirect:/order/myOrders?deletedSuccess";
     }
 
 }

@@ -51,7 +51,7 @@ public class BookService {
         Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
                 sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
         );
-        return bookRepository.findAll(pageable);
+        return bookRepository.findBooksByQuantityGreaterThanEqual(Constants.BOOK_QUANTITY_MIN_FOR_USER, pageable);
     }
 
     public void save(BookDto bookDto) {

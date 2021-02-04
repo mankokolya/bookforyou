@@ -16,4 +16,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Book b SET b.quantity = :quantity WHERE b.id = :id")
     int updateQuantity(@Param("quantity") int quantity, @Param("id") long id);
+
+Page<Book> findBooksByQuantityGreaterThanEqual(int minQuantity, Pageable pageable);
+
+
 }

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,6 @@ public class Account {
     private User user;
 
     @OneToMany(mappedBy = "account", fetch=FetchType.EAGER)
-    private Set<Order> orders;
+    private Set<Order> orders = new HashSet<>();
 
 }

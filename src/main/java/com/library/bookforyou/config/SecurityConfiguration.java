@@ -11,9 +11,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableWebSecurity
+@EnableTransactionManagement
+
+
 //@EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -44,12 +48,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/books/page/**",
-                        "/books/find/**","/registration/**", "/login/**", "/home/**","/page/**").permitAll()
+                        "/books/find/**","/registration/**", "/login/**", "/home/**","/page/**",
+                        "/order/take/**", "/order/read/**").permitAll()
                 .antMatchers("/order/myOrders/**", "/users/page/**", "/order/page/**",
-                        "/users/userprofile/**", "/order/take/**").authenticated()
+                        "/users/userprofile/**").authenticated()
                 .antMatchers(
                         "/books/**",
-                        "/order/**",
+//                        "/order/**",
                         "/users/**",
                         "/authors/**"
                 ).hasAnyRole("ADMIN", "LIBRARIAN")

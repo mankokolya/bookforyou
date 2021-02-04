@@ -16,10 +16,10 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToOne(mappedBy = "account", fetch=FetchType.EAGER)
+    @OneToOne(mappedBy = "account", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     private User user;
 
-    @OneToMany(mappedBy = "account", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch=FetchType.EAGER)
     private Set<Order> orders;
 
 }

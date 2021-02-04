@@ -42,7 +42,7 @@ public class OrderController {
     public String myOrders(Model model, Principal principal) {
         logger.info("MY ORDERS");
 
-        return listByPage( 1, "takenDate", "asc", principal, model);
+        return listByPage(1, "takenDate", "asc", principal, model);
     }
 
     @GetMapping("/page/{pageNumber}")
@@ -52,7 +52,7 @@ public class OrderController {
                              Principal principal,
                              Model model) {
 
-logger.info("LIST BY PAGE");
+        logger.info("LIST BY PAGE");
         Page<Order> page = orderService.findAllWithUsername(currentPage, sortField, sortDir, principal.getName());
         logger.info("PAging done");
         model.addAttribute("currentPage", currentPage);

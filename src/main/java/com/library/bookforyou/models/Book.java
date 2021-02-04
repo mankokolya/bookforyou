@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -64,7 +65,6 @@ public class Book {
 
 
 
-
     public Book(String title, Set<Author> authors, int quantity, Publisher publisher,
                 LocalDate publishedDate, Set<BookCategory> categories, String description) {
         this.title = title;
@@ -74,5 +74,18 @@ public class Book {
         this.publishedDate = publishedDate;
         this.categories = categories;
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(title, book.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title);
     }
 }

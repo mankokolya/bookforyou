@@ -2,7 +2,6 @@ package com.library.bookforyou.models;
 
 
 public enum Status {
-    NEW, APPROVED, DENIED, CLOSED;
-
+    APPROVED, CLOSED, DENIED, NEW;
 }
 

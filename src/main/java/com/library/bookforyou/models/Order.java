@@ -39,7 +39,7 @@ public class Order {
     private Place place;
 
     public Order(Account account, Book book, LocalDate takenDate,
-                 LocalDate returnedDate, LocalDate dueDate, double penalty, Place place) {
+                 LocalDate returnedDate, LocalDate dueDate, double penalty, Place place, Status status) {
         this.account = account;
         this.book = book;
         this.takenDate = takenDate;
@@ -47,5 +47,6 @@ public class Order {
         this.dueDate = dueDate;
         this.penalty = penalty;
         this.place = place;
+        this.status = status;
     }
 }

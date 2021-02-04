@@ -7,6 +7,7 @@ import com.library.bookforyou.services.AuthorService;
 import com.library.bookforyou.services.BookService;
 import com.library.bookforyou.services.CategoryService;
 import com.library.bookforyou.services.PublisherService;
+import com.library.bookforyou.util.PagingModel;
 import com.library.bookforyou.web.dto.BookDto;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,7 @@ public class BookController {
 
         Page<Book> page = bookService.findAllByParam(currentPage, sortField, sortDir, searchParam);
 
-        List<Book> booksSearch = page.getContent();
+//        new PagingModel().createPagingModel(model, currentPage, sortField, sortDir, page);
 
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalItems", page.getTotalElements());
@@ -98,7 +99,7 @@ public class BookController {
         model.addAttribute("searchParam", searchParam);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
-        model.addAttribute("books", booksSearch);
+        model.addAttribute("books", page.getContent());
 
         return "searchBook";
     }

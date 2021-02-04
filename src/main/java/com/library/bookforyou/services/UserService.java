@@ -64,4 +64,8 @@ public class UserService {
         );
         return userRepository.findAll(pageable);
     }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByEmail(username);
+    }
 }

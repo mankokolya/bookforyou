@@ -21,6 +21,10 @@
                 <div class="alert alert-info">[[#{registration.successful}]]</div>
             </div>
 
+            <div th:if="${param.pleaseLogin}">
+                <div class="alert alert-info">[[#{login.pleaseLogin}]]</div>
+            </div>
+
             <h1>[[#{login.login}]]</h1>
             <form th:action="@{/login}" method="post">
 

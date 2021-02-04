@@ -42,16 +42,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(
-                "/registration**",
-                "/login/**",
-                "/books/**",
-                "/order/**",
-                "/page/**",
-                "/users/**",
-                "/authors/**",
-                "/home/**").permitAll()
-                .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+        http.authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/images/**", "/books/page/**",
+                        "/books/find/**","/registration/**", "/login/**", "/home/**","/page/**").permitAll()
+                .antMatchers("/order/myOrders/**", "/users/page/**", "/order/page/**",
+                        "/users/userprofile/**", "/order/take/**").authenticated()
+                .antMatchers(
+                        "/books/**",
+                        "/order/**",
+                        "/users/**",
+                        "/authors/**"
+                ).hasAnyRole("ADMIN", "LIBRARIAN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -63,9 +64,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
-                .permitAll()
-                .and()
-                //todo implement
-                .exceptionHandling().accessDeniedPage("/403");
+                .permitAll();
     }
 }

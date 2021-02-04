@@ -9,6 +9,7 @@ import com.library.bookforyou.repositories.AuthorRepository;
 import com.library.bookforyou.repositories.BookRepository;
 import com.library.bookforyou.repositories.CategoryRepository;
 import com.library.bookforyou.repositories.PublisherRepository;
+import com.library.bookforyou.util.Constants;
 import com.library.bookforyou.web.dto.BookDto;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
     private Logger logger = Logger.getLogger(BookController.class);
-    private final int PAGE_SIZE = 2;
 
     @Autowired
     private BookRepository bookRepository;
@@ -41,13 +41,13 @@ public class BookService {
 
     public Page<Book> listAll(int pageNumber, String sortField, String sortDir) {
         if (sortField.equals("categories") || sortField.equals("authors")) {
-            Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
+            Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
                     sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
             );
             return bookRepository.findAll(pageable);
         }
 
-        Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
+        Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
                 sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
         );
         return bookRepository.findAll(pageable);
@@ -85,19 +85,17 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-
-
     public Page<Book> findAllByParam(int pageNumber, String sortField, String sortDir, String param) {
 
         if (sortField.equals("categories") || sortField.equals("authors")) {
-            Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
+            Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
                     sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
             );
             return bookRepository.findByTitleLikeIgnoreCaseOrAuthorsNameLikeIgnoreCase(
                     "%" + param + "%", "%" + param + "%", pageable);
         }
 
-        Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
+        Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
                 sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
         );
         return bookRepository.findByTitleLikeIgnoreCaseOrAuthorsNameLikeIgnoreCase(

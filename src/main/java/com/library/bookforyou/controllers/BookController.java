@@ -89,6 +89,7 @@ public class BookController {
 
     private void createModel(Model model, String searchParam, int currentPage, String sortField, String sortDir, Page<Book> page) {
         PagingModel.createPagingModel(model, currentPage, sortField, sortDir, page);
+        model.addAttribute("searchParam", searchParam);
         model.addAttribute("books", page.getContent());
     }
 }

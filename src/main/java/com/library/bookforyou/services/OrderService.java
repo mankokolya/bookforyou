@@ -1,8 +1,11 @@
 package com.library.bookforyou.services;
 
 import com.library.bookforyou.models.*;
+import com.library.bookforyou.repositories.BookRepository;
 import com.library.bookforyou.repositories.OrderRepository;
+import com.library.bookforyou.repositories.UserRepository;
 import com.library.bookforyou.util.Constants;
+import com.library.bookforyou.util.PagingModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +26,17 @@ public class OrderService {
     OrderRepository orderRepository;
 
     @Autowired
-    BookService bookService;
+    BookRepository bookRepository;
 
     @Autowired
-    UserService userService;
+    UserRepository userRepository;
 
+
+    //todo refactor get book from
     public Order createTakeHomeOrder(long bookId, String username) {
         User user = getUser(username);
 
-        Book book = bookService.findBook(bookId).
+        Book book = bookRepository.findById(bookId).
                 orElseThrow(() -> new NoSuchElementException(
                         String.format("Book with id: %d, not present in the library please choose another one", bookId)));
 
@@ -43,7 +48,7 @@ public class OrderService {
 
     @Transactional
     public Order saveOrder(Book book, Order order) {
-        bookService.updateBookQuantity(book.getQuantity() - 1, book.getId());
+        bookRepository.updateQuantity(book.getQuantity() - 1, book.getId());
         return orderRepository.save(order);
     }
 
@@ -59,37 +64,30 @@ public class OrderService {
 
         return orderRepository.findAllByAccount(
                 getUser(username).getAccount(),
-                getPageable(currentPage, sortField, sortDir));
+                PagingModel.getPageable(currentPage, sortField, sortDir));
     }
 
 
     @Transactional
     public void cancelOrder(long id, long bookId, int bookQuantity) {
-        bookService.updateBookQuantity(bookQuantity + 1, bookId);
+        bookRepository.updateQuantity(bookQuantity + 1, bookId);
         orderRepository.deleteById(id);
     }
 
-
-    public Page<Order> findAllOrdersByStatus(int currentPage, String sortField, String sortDir,
-                                             Status status) {
-        return orderRepository.findAllByStatus(status, getPageable(currentPage, sortField, sortDir));
+    public Page<Order> findAllOrdersByStatus(int currentPage, String sortField, String sortDir, Status status) {
+        return orderRepository.findAllByStatus(status, PagingModel.getPageable(currentPage, sortField, sortDir));
     }
 
-
-    private PageRequest getPageable(int currentPage, String sortField, String sortDir) {
-        return PageRequest.of(currentPage - 1, Constants.ORDERS_PAGE_SIZE,
-                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-    }
 
     private User getUser(String username) {
-        return userService.findByUsername(username).
+        return userRepository.findByEmail(username).
                 orElseThrow(() -> new UsernameNotFoundException(
                         String.format("User with username %s not registered in the system", username)));
     }
 
     @Transactional
     public void declineOrder(long id, long bookId, int bookQuantity) {
-        bookService.updateBookQuantity(bookQuantity + 1, bookId);
+        bookRepository.updateQuantity(bookQuantity + 1, bookId);
         orderRepository.updateStatus(Status.DECLINED, id);
     }
 

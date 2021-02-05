@@ -10,6 +10,7 @@ import com.library.bookforyou.repositories.BookRepository;
 import com.library.bookforyou.repositories.CategoryRepository;
 import com.library.bookforyou.repositories.PublisherRepository;
 import com.library.bookforyou.util.Constants;
+import com.library.bookforyou.util.PagingModel;
 import com.library.bookforyou.web.dto.BookDto;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,16 +43,11 @@ public class BookService {
 
     public Page<Book> listAll(int pageNumber, String sortField, String sortDir) {
         if (sortField.equals("categories") || sortField.equals("authors")) {
-            Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
-                    sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
-            );
-            return bookRepository.findBooksByQuantityGreaterThanEqual(Constants.BOOK_QUANTITY_MIN_FOR_USER, pageable);
+            return bookRepository.findBooksByQuantityGreaterThanEqual(Constants.BOOK_QUANTITY_MIN_FOR_USER,
+                    PagingModel.getPageable(pageNumber, sortField + ".name", sortDir));
         }
-
-        Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
-                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
-        );
-        return bookRepository.findBooksByQuantityGreaterThanEqual(Constants.BOOK_QUANTITY_MIN_FOR_USER, pageable);
+        return bookRepository.findBooksByQuantityGreaterThanEqual(Constants.BOOK_QUANTITY_MIN_FOR_USER,
+                PagingModel.getPageable(pageNumber, sortField, sortDir));
     }
 
     public void save(BookDto bookDto) {
@@ -87,26 +83,20 @@ public class BookService {
     }
 
     public Page<Book> findAllByParam(int pageNumber, String sortField, String sortDir, String param) {
-
         if (sortField.equals("categories") || sortField.equals("authors")) {
-            Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
-                    sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
-            );
             return bookRepository.findBooksByTitleLikeIgnoreCaseAndQuantityIsGreaterThanEqualOrAuthorsNameLikeIgnoreCaseAndQuantityIsGreaterThanEqual(
-                    "%" + param + "%", Constants.BOOK_QUANTITY_MIN_FOR_USER, "%" + param + "%",
-                    Constants.BOOK_QUANTITY_MIN_FOR_USER, pageable);
+                    "%" + param + "%",
+                    Constants.BOOK_QUANTITY_MIN_FOR_USER,
+                    "%" + param + "%",
+                    Constants.BOOK_QUANTITY_MIN_FOR_USER,
+                    PagingModel.getPageable(pageNumber, sortField + ".name", sortDir));
         }
 
-        Pageable pageable = PageRequest.of(pageNumber - 1, Constants.PAGE_SIZE,
-                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()
-        );
         return bookRepository.findBooksByTitleLikeIgnoreCaseAndQuantityIsGreaterThanEqualOrAuthorsNameLikeIgnoreCaseAndQuantityIsGreaterThanEqual(
-                "%" + param + "%", Constants.BOOK_QUANTITY_MIN_FOR_USER, "%" + param + "%",
-                Constants.BOOK_QUANTITY_MIN_FOR_USER, pageable);
-    }
-
-    @Transactional
-    public int updateBookQuantity(int bookQuantity, Long id) {
-        return bookRepository.updateQuantity(bookQuantity, id);
+                "%" + param + "%",
+                Constants.BOOK_QUANTITY_MIN_FOR_USER,
+                "%" + param + "%",
+                Constants.BOOK_QUANTITY_MIN_FOR_USER,
+                PagingModel.getPageable(pageNumber, sortField, sortDir));
     }
 }

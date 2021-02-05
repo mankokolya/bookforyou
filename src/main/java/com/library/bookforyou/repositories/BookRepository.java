@@ -19,6 +19,4 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     int updateQuantity(@Param("quantity") int quantity, @Param("id") long id);
 
     Page<Book> findBooksByQuantityGreaterThanEqual(int minQuantity, Pageable pageable);
-
-
 }

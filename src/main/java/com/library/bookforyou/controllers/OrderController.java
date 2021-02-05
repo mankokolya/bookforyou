@@ -1,6 +1,7 @@
 package com.library.bookforyou.controllers;
 
 import com.library.bookforyou.models.Order;
+import com.library.bookforyou.models.Status;
 import com.library.bookforyou.services.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,21 +38,51 @@ public class OrderController {
 
     @GetMapping("/myOrders")
     public String myOrders(Model model, Principal principal) {
-        logger.info("MY ORDERS");
+        logger.info("Getting my orders");
 
-        return listByPage(1, "takenDate", "asc", principal, model);
+        return listMyByPage(1, "takenDate", "desc", principal, model);
     }
 
+    @GetMapping("/newOrders")
+    public String newOrders(Model model) {
+        logger.info("Getting new orders");
+
+        return listNewByPage(1, "takenDate", "desc", model);
+    }
+
+    @GetMapping("/newOrders/page/{pageNumber}")
+    private String listNewByPage(@PathVariable("pageNumber") int currentPage,
+                                 @Param("sortField") String sortField,
+                                 @Param("sortDir") String sortDir,
+                                 Model model) {
+
+        Page<Order> newOrdersPage = orderService.findAllOrdersByStatus(currentPage, sortField, sortDir, Status.NEW);
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalItems", newOrdersPage.getTotalElements());
+        model.addAttribute("totalPages", newOrdersPage.getTotalPages());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute( "pagedOrders", newOrdersPage.getContent());
+
+        return "orders/newOrders";
+    }
+
+
     @GetMapping("/page/{pageNumber}")
-    public String listByPage(@PathVariable("pageNumber") int currentPage,
-                             @Param("sortField") String sortField,
-                             @Param("sortDir") String sortDir,
-                             Principal principal,
-                             Model model) {
+    public String listMyByPage(@PathVariable("pageNumber") int currentPage,
+                               @Param("sortField") String sortField,
+                               @Param("sortDir") String sortDir,
+                               Principal principal,
+                               Model model) {
 
         logger.info("LIST BY PAGE");
         Page<Order> page = orderService.findAllWithUsername(currentPage, sortField, sortDir, principal.getName());
         logger.info("PAging done");
+
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("totalPages", page.getTotalPages());
@@ -61,13 +92,12 @@ public class OrderController {
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
         model.addAttribute("pagedOrders", page.getContent());
-        logger.info("Total elements " + page.getTotalElements());
 
         return "orders/myOrders";
     }
 
     @GetMapping("/delete")
-    public String deleteBook(@RequestParam(name = "id") long id,
+    public String deleteOrder(@RequestParam(name = "id") long id,
                              @RequestParam(name = "bookId") long bookID,
                              @RequestParam(name = "bookQuantity") int booQuantity) {
         logger.info(String.format("Deleting order with id %d", id));
@@ -75,6 +105,26 @@ public class OrderController {
         logger.info(String.format("Deleted order with id %d successfully", id));
 
         return "redirect:/order/myOrders?deletedSuccess";
+    }
+
+    @GetMapping("/decline")
+    public String declineOrder(@RequestParam(name = "id") long id,
+                             @RequestParam(name = "bookId") long bookID,
+                             @RequestParam(name = "bookQuantity") int bookQuantity) {
+        logger.info(String.format("Librarian declines order with id %d", id));
+
+        orderService.declineOrder(id, bookID, bookQuantity);
+
+        return "redirect:/order/newOrders";
+    }
+
+
+    @GetMapping("/approve")
+    public String approveOrder(@RequestParam(name = "id") long id) {
+        logger.info(String.format("Librarian approves order with id %d", id));
+
+        orderService.approveOrder(id);
+        return "redirect:/order/newOrders";
     }
 
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>Fragments</head>
 
 <body>
@@ -8,19 +9,30 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
     <!-- Bootstrap scripts -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <!-- Custom script as written on bootstrap page -->
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
 </div>
 
 <div th:fragment="menu">
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -40,30 +52,47 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/home">[[#{menu.home}]]</a></li>
-                    <li sec:authorize="hasAnyAuthority('ADMIN')"><a href="/users">[[#{menu.users}]]</a></li>
+
+                    <li sec:authorize="hasAuthority('ADMIN')"><a href="/users">[[#{menu.users}]]</a></li>
+
+                    <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('LIBRARIAN', 'ADMIN')">
+
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            [[#{orders}]]
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" th:href="@{/order/newOrders}">[[#{menu.newOrder}]]</a>
+                            <a class="dropdown-item" href="#">[[#{menu.penaltyOrder}]]</a>
+                            <a class="dropdown-item" href="#">[[#{menu.all}]]</a>
+                        </div>
+                    </li>
+
                     <li sec:authorize="isAuthenticated()"><a href="/order/myOrders">[[#{menu.myOrders}]]</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right" th:with="currentUrl=(${#httpServletRequest.requestURI + '?'
-                 + #strings.defaultString(#httpServletRequest.queryString, '')})">
+                                         + #strings.defaultString(#httpServletRequest.queryString, '')})">
 
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{${currentUrl}(lang=en)}">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                                     width="40" height="20">
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{${currentUrl}(lang=en)}">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                                 width="40" height="20">
+                        </a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{${currentUrl}(lang=uk)}">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg"
-                                     width="40" height="20">
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{${currentUrl}(lang=uk)}">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg"
+                                 width="40" height="20">
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li sec:authorize="isAuthenticated()"><a th:href="@{/users/userprofile}">
-                        <span class="glyphicon glyphicon-user" sec:authentication="principal.username">Profile</span> </a>
+                        <span class="glyphicon glyphicon-user" sec:authentication="principal.username">Profile</span>
+                    </a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a th:href="@{/registration}"><span

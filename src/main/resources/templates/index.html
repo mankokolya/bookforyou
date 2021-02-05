@@ -38,7 +38,7 @@
 <!-- Add button, table with books-->
 <div class="container">
 
-    <a sec:authorize="hasAnyAuthority('ADMIN', 'LIBRARIAN')" th:href="@{/books/new}"
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/books/new}"
        class="btn btn-primary table-striped">[[#{table.new}]]</a>
 
     <table class="table table-bordered table-stripped table-hover">

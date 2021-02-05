@@ -47,17 +47,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(
+                        "/books/**",
+//                        "/order/**",
+                        "/users**",
+                        "/authors/**"
+                ).hasAnyAuthority( "LIBRARIAN", "ADMIN")
                 .antMatchers("/css/**", "/js/**", "/images/**", "/books/page/**",
                         "/books/find/**","/registration/**", "/login/**", "/home/**","/page/**",
                         "/order/take/**", "/order/read/**").permitAll()
                 .antMatchers("/order/myOrders/**", "/users/page/**", "/order/page/**",
                         "/users/userprofile/**").authenticated()
-                .antMatchers(
-                        "/books/**",
-//                        "/order/**",
-                        "/users/**",
-                        "/authors/**"
-                ).hasAnyRole("ADMIN", "LIBRARIAN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

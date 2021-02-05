@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,6 @@ import java.util.NoSuchElementException;
 @Service
 public class OrderService {
     private Logger logger = LoggerFactory.getLogger(OrderService.class);
-
-
     @Autowired
     OrderRepository orderRepository;
 
@@ -32,9 +29,7 @@ public class OrderService {
     UserService userService;
 
     public Order createTakeHomeOrder(long bookId, String username) {
-        User user = userService.findByUsername(username).
-                orElseThrow(() -> new UsernameNotFoundException(
-                        String.format("User with username %s not registered in the system", username)));
+        User user = getUser(username);
 
         Book book = bookService.findBook(bookId).
                 orElseThrow(() -> new NoSuchElementException(
@@ -48,36 +43,59 @@ public class OrderService {
 
     @Transactional
     public Order saveOrder(Book book, Order order) {
-        logger.info("Trying to decrease quantity by one is decreased by one.");
-
         bookService.updateBookQuantity(book.getQuantity() - 1, book.getId());
-
-        logger.info("Quantity is decreased by one. Saving Order to Account");
-
         return orderRepository.save(order);
     }
 
-
     public Page<Order> findAllWithUsername(int currentPage, String sortField, String sortDir, String username) {
-//        if (sortField.equals("categories") || sortField.equals("authors")) {
+
+        //TODO FILTERING
+        //        if (sortField.equals("categories") || sortField.equals("authors")) {
 //            Pageable pageable = PageRequest.of(pageNumber - 1, PAGE_SIZE,
 //                    sortDir.equals("asc") ? Sort.by(sortField + ".name").ascending() : Sort.by(sortField + ".name").descending()
 //            );
 //            return bookRepository.findAll(pageable);
 //        }
 
-        User user = userService.findByUsername(username).
-                orElseThrow(() -> new UsernameNotFoundException(
-                        String.format("User with username %s not registered in the system", username)));
-        Pageable pageable = PageRequest.of(currentPage - 1, Constants.PAGE_SIZE,
-                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-
-        return orderRepository.findAllByAccount(user.getAccount(), pageable);
+        return orderRepository.findAllByAccount(
+                getUser(username).getAccount(),
+                getPageable(currentPage, sortField, sortDir));
     }
+
 
     @Transactional
     public void cancelOrder(long id, long bookId, int bookQuantity) {
         bookService.updateBookQuantity(bookQuantity + 1, bookId);
         orderRepository.deleteById(id);
+    }
+
+
+    public Page<Order> findAllOrdersByStatus(int currentPage, String sortField, String sortDir,
+                                             Status status) {
+        return orderRepository.findAllByStatus(status, getPageable(currentPage, sortField, sortDir));
+    }
+
+
+    private PageRequest getPageable(int currentPage, String sortField, String sortDir) {
+        return PageRequest.of(currentPage - 1, Constants.ORDERS_PAGE_SIZE,
+                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+    }
+
+    private User getUser(String username) {
+        return userService.findByUsername(username).
+                orElseThrow(() -> new UsernameNotFoundException(
+                        String.format("User with username %s not registered in the system", username)));
+    }
+
+    @Transactional
+    public void declineOrder(long id, long bookId, int bookQuantity) {
+        bookService.updateBookQuantity(bookQuantity + 1, bookId);
+        orderRepository.updateStatus(Status.DECLINED, id);
+    }
+
+
+    @Transactional
+    public void approveOrder(long id) {
+        orderRepository.updateStatus(Status.APPROVED, id);
     }
 }

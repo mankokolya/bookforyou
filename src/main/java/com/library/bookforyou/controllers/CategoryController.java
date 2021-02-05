@@ -20,7 +20,6 @@ public class CategoryController {
     @PostMapping("/addCategory")
     public String addNewCategory(@RequestParam("newCategory") String newCategory) {
         logger.debug("Adding new Category with name {}", newCategory);
-        //todo constraint violation exception
         categoryService.addNewCategory(newCategory);
         return "redirect:/books/new?success";
     }

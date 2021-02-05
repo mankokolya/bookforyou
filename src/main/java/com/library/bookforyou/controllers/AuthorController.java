@@ -24,7 +24,6 @@ public class AuthorController {
     @PostMapping("/addAuthor")
     public String addNewAuthor(@RequestParam("newAuthor") String newAuthor) {
         logger.debug("Adding new Author with name {}", newAuthor);
-        //todo constraint violation exception
         authorService.addNewAuthor(newAuthor);
         return "redirect:/books/new?success";
     }

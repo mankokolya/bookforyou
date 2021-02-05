@@ -1,8 +1,6 @@
 package com.library.bookforyou.controllers;
 
-import com.library.bookforyou.models.Author;
 import com.library.bookforyou.models.Book;
-import com.library.bookforyou.models.BookCategory;
 import com.library.bookforyou.services.AuthorService;
 import com.library.bookforyou.services.BookService;
 import com.library.bookforyou.services.CategoryService;
@@ -16,12 +14,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/books")
@@ -65,17 +60,16 @@ public class BookController {
         return "redirect:/home";
     }
 
-    @GetMapping("/findOne")
-    @ResponseBody
-    public Book findOne(long id) {
-        return bookService.findBook(id).get();
-    }
+//    @GetMapping("/findOne")
+//    @ResponseBody
+//    public Book findOne(long id) {
+//
+//        return bookService.findBook(id).get(); //service get
+//    }
 
 
     @GetMapping("/find")
     public String findBySearchParam(@RequestParam("searchParam") String searchParam, Model model) {
-        logger.info("param" + searchParam);
-
         return listByPage(model, searchParam, 1, "title", "asc");
     }
 
@@ -88,19 +82,13 @@ public class BookController {
 
         Page<Book> page = bookService.findAllByParam(currentPage, sortField, sortDir, searchParam);
 
-//        new PagingModel().createPagingModel(model, currentPage, sortField, sortDir, page);
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("totalPages", page.getTotalPages());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("searchParam", searchParam);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("books", page.getContent());
+        createModel(model, searchParam, currentPage, sortField, sortDir, page);
 
         return "searchBook";
+    }
+
+    private void createModel(Model model, String searchParam, int currentPage, String sortField, String sortDir, Page<Book> page) {
+        PagingModel.createPagingModel(model, currentPage, sortField, sortDir, page);
+        model.addAttribute("books", page.getContent());
     }
 }

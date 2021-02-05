@@ -26,7 +26,6 @@ public class RegistrationController {
         this.userService = userService;
     }
 
-    //trims empty input and replace it with null
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
@@ -44,7 +43,6 @@ public class RegistrationController {
             bindingResult.addError(new FieldError("user", "confirmPassword",
                     "Password must match"));
             return "registration";
-
         }
 
         if (userService.userExists(userDTO.getEmail())) {

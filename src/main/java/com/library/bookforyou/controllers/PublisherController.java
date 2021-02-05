@@ -20,7 +20,6 @@ public class PublisherController {
     @PostMapping ("/addPublisher")
     public String addNewPublisher(@RequestParam("newPublisher") String addPublisher) {
         logger.debug("Adding new Publisher with name {}", addPublisher);
-        //todo constraint violation exception
         publisherService.addNewPublisher(addPublisher);
         return "redirect:/books/new?success";
     }

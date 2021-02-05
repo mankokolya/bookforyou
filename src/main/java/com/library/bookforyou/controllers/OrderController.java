@@ -3,6 +3,7 @@ package com.library.bookforyou.controllers;
 import com.library.bookforyou.models.Order;
 import com.library.bookforyou.models.Status;
 import com.library.bookforyou.services.OrderService;
+import com.library.bookforyou.util.PagingModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,17 +58,7 @@ public class OrderController {
                                  Model model) {
 
         Page<Order> newOrdersPage = orderService.findAllOrdersByStatus(currentPage, sortField, sortDir, Status.NEW);
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalItems", newOrdersPage.getTotalElements());
-        model.addAttribute("totalPages", newOrdersPage.getTotalPages());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute( "pagedOrders", newOrdersPage.getContent());
-
+        createModel(currentPage, sortField, sortDir, model, newOrdersPage);
         return "orders/newOrders";
     }
 
@@ -79,42 +70,27 @@ public class OrderController {
                                Principal principal,
                                Model model) {
 
-        logger.info("LIST BY PAGE");
         Page<Order> page = orderService.findAllWithUsername(currentPage, sortField, sortDir, principal.getName());
-        logger.info("PAging done");
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("totalPages", page.getTotalPages());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("pagedOrders", page.getContent());
-
+        createModel(currentPage, sortField, sortDir, model, page);
         return "orders/myOrders";
     }
 
+
     @GetMapping("/delete")
     public String deleteOrder(@RequestParam(name = "id") long id,
-                             @RequestParam(name = "bookId") long bookID,
-                             @RequestParam(name = "bookQuantity") int booQuantity) {
+                              @RequestParam(name = "bookId") long bookID,
+                              @RequestParam(name = "bookQuantity") int booQuantity) {
         logger.info(String.format("Deleting order with id %d", id));
         orderService.cancelOrder(id, bookID, booQuantity);
-        logger.info(String.format("Deleted order with id %d successfully", id));
-
         return "redirect:/order/myOrders?deletedSuccess";
     }
 
     @GetMapping("/decline")
     public String declineOrder(@RequestParam(name = "id") long id,
-                             @RequestParam(name = "bookId") long bookID,
-                             @RequestParam(name = "bookQuantity") int bookQuantity) {
+                               @RequestParam(name = "bookId") long bookID,
+                               @RequestParam(name = "bookQuantity") int bookQuantity) {
         logger.info(String.format("Librarian declines order with id %d", id));
-
         orderService.declineOrder(id, bookID, bookQuantity);
-
         return "redirect:/order/newOrders";
     }
 
@@ -122,9 +98,14 @@ public class OrderController {
     @GetMapping("/approve")
     public String approveOrder(@RequestParam(name = "id") long id) {
         logger.info(String.format("Librarian approves order with id %d", id));
-
         orderService.approveOrder(id);
         return "redirect:/order/newOrders";
     }
 
+
+    private void createModel(@PathVariable("pageNumber") int currentPage, @Param("sortField") String sortField,
+                             @Param("sortDir") String sortDir, Model model, Page<Order> page) {
+        PagingModel.createPagingModel(model, currentPage, sortField, sortDir, page);
+        model.addAttribute("pagedOrders", page.getContent());
+    }
 }

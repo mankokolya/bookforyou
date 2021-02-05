@@ -38,16 +38,7 @@ public class UsersController {
                               @Param("sortDir") String sortDir) {
 
         Page<User> page = userService.findAll(currentPage, sortField, sortDir);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("totalPages", page.getTotalPages());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("users", page.getContent());
-
+        createModel(model, currentPage, sortField, sortDir, page);
         return "users/users";
     }
 
@@ -55,5 +46,11 @@ public class UsersController {
     public String getProfile(Model model, Principal principal) {
         model.addAttribute(userService.findByUsername(principal.getName()));
         return "profile/profile";
+    }
+
+    private void createModel(Model model, int currentPage, String sortField, String sortDir, Page<User> page) {
+        PagingModel.createPagingModel(model, currentPage, sortField, sortDir, page);
+
+        model.addAttribute("users", page.getContent());
     }
 }

@@ -3,6 +3,7 @@ package com.library.bookforyou.controllers;
 import com.library.bookforyou.models.Author;
 import com.library.bookforyou.models.Book;
 import com.library.bookforyou.services.BookService;
+import com.library.bookforyou.util.PagingModel;
 import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,18 +43,13 @@ public class MainController {
                              @Param("sortDir") String sortDir) {
 
         Page<Book> page = bookService.listAll(currentPage, sortField, sortDir);
-        List<Book> books = page.getContent();
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("totalPages", page.getTotalPages());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("books", books);
+        createModel(model, currentPage, sortField, sortDir, page);
 
         return "index";
+    }
+
+    private void createModel(Model model, int currentPage, String sortField, String sortDir, Page<Book> page) {
+        PagingModel.createPagingModel(model, currentPage, sortField, sortDir, page);
+        model.addAttribute("books", page.getContent());
     }
 }

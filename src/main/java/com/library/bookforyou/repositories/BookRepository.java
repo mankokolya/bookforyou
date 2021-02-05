@@ -11,13 +11,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    Page<Book> findByTitleLikeIgnoreCaseOrAuthorsNameLikeIgnoreCase(String param, String author, Pageable pageable);
+    Page<Book> findBooksByTitleLikeIgnoreCaseAndQuantityIsGreaterThanEqualOrAuthorsNameLikeIgnoreCaseAndQuantityIsGreaterThanEqual(
+            String param,int minQuantityTitle, String author,  int minQuantityAuthor, Pageable pageable);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Book b SET b.quantity = :quantity WHERE b.id = :id")
     int updateQuantity(@Param("quantity") int quantity, @Param("id") long id);
 
-Page<Book> findBooksByQuantityGreaterThanEqual(int minQuantity, Pageable pageable);
+    Page<Book> findBooksByQuantityGreaterThanEqual(int minQuantity, Pageable pageable);
 
 
 }

@@ -51,7 +51,7 @@ public class BookController {
 
     @PostMapping("/new")
     public String saveBook(@Valid BookDto bookDto, BindingResult bindingResult) {
-        logger.info(bookDto.toString());
+        logger.info("Saving new book to library");
         if (bindingResult.hasErrors()) {
             return "books/newBook";
         }

@@ -14,8 +14,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
 @Controller
@@ -23,17 +25,19 @@ import javax.validation.Valid;
 public class BookController {
     private Logger logger = Logger.getLogger(BookController.class);
 
-    @Autowired
-    BookService bookService;
+    private final BookService bookService;
+    private final AuthorService authorService;
+    private final CategoryService categoryService;
+    private final PublisherService publisherService;
 
     @Autowired
-    AuthorService authorService;
-
-    @Autowired
-    CategoryService categoryService;
-
-    @Autowired
-    PublisherService publisherService;
+    public BookController(BookService bookService, AuthorService authorService,
+                          CategoryService categoryService, PublisherService publisherService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
+        this.categoryService = categoryService;
+        this.publisherService = publisherService;
+    }
 
     @GetMapping("/new")
     public String addBook(Model model) {
@@ -47,10 +51,16 @@ public class BookController {
     @PostMapping("/new")
     public String saveBook(@Valid BookDto bookDto, BindingResult bindingResult) {
         logger.info("Saving new book to library");
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()){
             return "books/newBook";
         }
-        bookService.save(bookDto);
+
+        try {
+            bookService.save(bookDto);
+        } catch (ConstraintViolationException exception) {
+            bindingResult.addError(new FieldError("title", "title",
+                    "The book is already in library. Please add new one."));
+        }
         return "redirect:/home";
     }
 
@@ -59,14 +69,6 @@ public class BookController {
         bookService.deleteBook(id);
         return "redirect:/home";
     }
-
-//    @GetMapping("/findOne")
-//    @ResponseBody
-//    public Book findOne(long id) {
-//
-//        return bookService.findBook(id).get(); //service get
-//    }
-
 
     @GetMapping("/find")
     public String findBySearchParam(@RequestParam("searchParam") String searchParam, Model model) {

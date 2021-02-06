@@ -1,6 +1,5 @@
 package com.library.bookforyou.services;
 
-import com.library.bookforyou.controllers.BookController;
 import com.library.bookforyou.models.Author;
 import com.library.bookforyou.models.Book;
 import com.library.bookforyou.models.BookCategory;
@@ -12,17 +11,12 @@ import com.library.bookforyou.repositories.PublisherRepository;
 import com.library.bookforyou.util.Constants;
 import com.library.bookforyou.util.PagingModel;
 import com.library.bookforyou.web.dto.BookDto;
-import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,7 +24,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookService {
-    private Logger logger = Logger.getLogger(BookController.class);
 
     @Autowired
     private BookRepository bookRepository;
@@ -50,8 +43,8 @@ public class BookService {
                 PagingModel.getPageable(pageNumber, sortField, sortDir));
     }
 
+    @Transactional
     public void save(BookDto bookDto) {
-        //todo refactor
         Set<Author> authors = Arrays.stream(bookDto.getAuthors())
                 .map(author -> authorRepository.findByName(author))
                 .collect(Collectors.toSet());
@@ -62,8 +55,6 @@ public class BookService {
 
         Publisher publisher = publisherRepository.findByName(bookDto.getPublisher());
 
-
-        //transaction
         bookRepository.save(new Book(
                 bookDto.getTitle(),
                 authors,

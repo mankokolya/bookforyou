@@ -16,14 +16,14 @@ import javax.validation.ConstraintViolationException;
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
-    private Logger logger = LoggerFactory.getLogger(AuthorController.class);
+    private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @Autowired
     AuthorService authorService;
 
     @PostMapping("/addAuthor")
     public String addNewAuthor(@RequestParam("newAuthor") String newAuthor) {
-        logger.debug("Adding new Author with name {}", newAuthor);
+        logger.info("Adding new Author with name {}", newAuthor);
         authorService.addNewAuthor(newAuthor);
         return "redirect:/books/new?success";
     }
